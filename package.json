@@ -1,1 +1,1 @@
-{"name":"hurricane-radio-ai","version":"4.4.2-rc14.2-bust-up-default","type":"module","scripts":{"postinstall":"node bootstrap.mjs"},"dependencies":{"@vercel/sandbox":"latest"}}
+{"name":"hurricane-radio-ai","version":"4.4.2-rc14.2-bust-up-default","type":"module","dependencies":{"@vercel/sandbox":"latest"}}
