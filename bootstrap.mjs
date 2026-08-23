@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+const dir='.bootstrap';
+const m=JSON.parse(fs.readFileSync(path.join(dir,'manifest.json'),'utf8'));
+const parts=Array.from({length:m.parts},(_,i)=>fs.readFileSync(path.join(dir,`part-${String(i).padStart(2,'0')}.txt`),'utf8').trim());
+const bytes=Buffer.from(parts.join(''),'base64');
+const got=crypto.createHash('sha256').update(bytes).digest('hex');
+if(got!==m.sha256) throw new Error(`bootstrap sha mismatch: ${got}`);
+const zip='/tmp/rc142-clean.zip';
+fs.writeFileSync(zip,bytes);
+execFileSync('unzip',['-oq',zip,'-d','.'],{stdio:'inherit'});
+console.log(`RC14.2 bootstrap restored ${m.zipBytes} bytes (${m.sha256})`);
