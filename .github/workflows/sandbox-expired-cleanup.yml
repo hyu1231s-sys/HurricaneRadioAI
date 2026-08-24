@@ -1,0 +1,46 @@
+name: Cleanup Expired Sandbox Snapshots
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/sandbox-expired-cleanup.yml']
+  schedule:
+    - cron: '17 18 * * *'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Remove expired snapshots only
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
+          PROJECT_ID: prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu
+          BASE_SNAPSHOT: snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip
+        run: |
+          set -euo pipefail
+          test -n "$VERCEL_TOKEN" || { echo '::error::VERCEL_TOKEN missing'; exit 2; }
+          curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=asc&teamId=$TEAM_ID" \
+            -o /tmp/snapshots.json
+          node <<'NODE' > /tmp/expired.txt
+          const fs=require('fs');
+          const j=JSON.parse(fs.readFileSync('/tmp/snapshots.json','utf8'));
+          const rows=Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));
+          const now=Date.now(), base=process.env.BASE_SNAPSHOT;
+          for(const s of rows){
+            const exp=Number(s.expiresAt||0);
+            if(s.id && s.id!==base && exp>0 && exp<=now) console.log(s.id);
+          }
+          NODE
+          count=$(grep -c '^snap_' /tmp/expired.txt || true)
+          echo "expired_snapshot_count=$count"
+          freed=0
+          while read -r id; do
+            [ -n "$id" ] || continue
+            echo "Deleting expired snapshot $id"
+            curl -fsS -X DELETE -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v2/sandboxes/snapshots/$id?teamId=$TEAM_ID" >/dev/null
+            freed=$((freed+1))
+          done < /tmp/expired.txt
+          echo "deleted_expired_snapshots=$freed"
