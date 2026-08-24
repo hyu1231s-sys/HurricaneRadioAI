@@ -1,0 +1,24 @@
+name: Legacy RC14.19 Asset Pack Rejected
+on:
+  push:
+    branches: [rc14.21-preview]
+    paths: [.github/workflows/legacy-assets-inspect.yml]
+  pull_request:
+    branches: [main]
+    paths: [.github/workflows/legacy-assets-inspect.yml]
+
+jobs:
+  verify-legacy-is-not-reused:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm inherited asset archive is truncated
+        run: |
+          cat packed-rc1419/assets.b64.* | tr -d '\n\r ' | base64 -d > /tmp/rc1419-assets.tar.gz
+          if gzip -t /tmp/rc1419-assets.tar.gz 2>/tmp/gzip.err; then
+            echo 'Legacy RC14.19 asset archive unexpectedly became valid; re-audit before reuse.'
+            exit 1
+          fi
+          cat /tmp/gzip.err
+          grep -q 'unexpected end of file' /tmp/gzip.err
+          echo 'PASS: RC14.19 asset archive is truncated and intentionally rejected.'

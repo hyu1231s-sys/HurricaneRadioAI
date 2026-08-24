@@ -1,0 +1,9 @@
+{
+  "version": "4.4.19-rc14.19-deploy-ready",
+  "files": {
+    "index.html": "aff90a81a81d38015dab7a3109b141c5ade1c9bf7283adb861eb6d1e2c2cc4d2",
+    "api/app.js": "2a50a62cd1fb518acfc0423c50a828c87e83b299f5c77946fc615ed392c7260c",
+    "worker/hrai-pipeline.mjs": "f697c2e78af37902577c24dfe8d09a328c7e18ade3e1686653f81f5383c2cf42",
+    "worker/worker-server.mjs": "9cad2e8ec3a84995b4ff9004cfe537471c5aa235f2926fdfc2a7aa055874e7ea"
+  }
+}
