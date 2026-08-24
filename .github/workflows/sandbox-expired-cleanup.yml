@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Cleanup with diagnostics
+      - name: Cleanup snapshots with guaranteed report
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
@@ -24,75 +24,54 @@ jobs:
           KEEP_LATEST: '3'
           KEEP_RECENT_HOURS: '6'
         run: |
-          set -u
-          : > /tmp/delete-results.ndjson
-          if [ -z "${VERCEL_TOKEN:-}" ]; then
-            printf '%s\n' '{"ok":false,"stage":"credential","error":"VERCEL_TOKEN missing"}' > SANDBOX_CLEANUP_REPORT.json
-            exit 0
-          fi
-
-          list_code=$(curl -sS -o /tmp/snapshots.json -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=desc&teamId=$TEAM_ID" || true)
-
-          if [ "$list_code" != "200" ]; then
-            LIST_CODE="$list_code" node <<'NODE'
-            const fs=require('fs');
-            let body='';try{body=fs.readFileSync('/tmp/snapshots.json','utf8').slice(0,2000)}catch{}
-            fs.writeFileSync('SANDBOX_CLEANUP_REPORT.json',JSON.stringify({ok:false,generatedAt:new Date().toISOString(),stage:'list',httpStatus:Number(process.env.LIST_CODE||0),body},null,2)+'\n');
-            NODE
-            exit 0
-          fi
-
-          node <<'NODE' > /tmp/delete.txt
+          node <<'NODE'
           const fs=require('fs');
-          const j=JSON.parse(fs.readFileSync('/tmp/snapshots.json','utf8'));
-          const rows=Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));
+          const token=process.env.VERCEL_TOKEN||'';
+          const team=process.env.TEAM_ID;
+          const project=process.env.PROJECT_ID;
           const base=process.env.BASE_SNAPSHOT;
           const keepLatest=Math.max(0,Number(process.env.KEEP_LATEST||3));
-          const recentMs=Math.max(0,Number(process.env.KEEP_RECENT_HOURS||6))*3600*1000;
-          const now=Date.now();
-          const ts=s=>Number(s.lastUsedAt||s.updatedAt||s.createdAt||0);
-          const active=rows.filter(s=>s&&s.id&&s.id!==base).sort((a,b)=>ts(b)-ts(a));
-          const keep=new Set(active.slice(0,keepLatest).map(s=>s.id));
-          for(const s of active){
-            const t=ts(s), recent=t>0&&now-t<=recentMs;
-            if(keep.has(s.id)||recent)continue;
-            console.log(s.id);
+          const keepRecentHours=Math.max(0,Number(process.env.KEEP_RECENT_HOURS||6));
+          const report={ok:false,generatedAt:new Date().toISOString(),policy:{keepBase:base,keepLatest,keepRecentHours}};
+          const norm=j=>Array.isArray(j)?j:(Array.isArray(j?.data)?j.data:(j?.snapshots||j?.data?.snapshots||[]));
+          const bytes=r=>r.reduce((n,s)=>n+Number(s?.sizeBytes||0),0);
+          const snapUrl=`https://api.vercel.com/v2/sandboxes/snapshots?project=${encodeURIComponent(project)}&limit=100&sortOrder=desc&teamId=${encodeURIComponent(team)}`;
+          async function req(url,opts={}){
+            const r=await fetch(url,{...opts,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opts.headers||{})}});
+            const text=await r.text();
+            let json=null;try{json=JSON.parse(text)}catch{}
+            return {status:r.status,ok:r.ok,text,json};
           }
-          NODE
-
-          while read -r id; do
-            [ -n "$id" ] || continue
-            code=$(curl -sS -o /tmp/delete-body.json -w '%{http_code}' -X DELETE -H "Authorization: Bearer $VERCEL_TOKEN" \
-              "https://api.vercel.com/v2/sandboxes/snapshots/$id?teamId=$TEAM_ID" || true)
-            ID="$id" CODE="$code" node <<'NODE' >> /tmp/delete-results.ndjson
-            const fs=require('fs');
-            let body='';try{body=fs.readFileSync('/tmp/delete-body.json','utf8').slice(0,1000)}catch{}
-            console.log(JSON.stringify({id:process.env.ID,httpStatus:Number(process.env.CODE||0),deleted:String(process.env.CODE)==='200',body}));
-            NODE
-          done < /tmp/delete.txt
-
-          after_code=$(curl -sS -o /tmp/after.json -w '%{http_code}' -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=desc&teamId=$TEAM_ID" || true)
-
-          AFTER_CODE="$after_code" node <<'NODE'
-          const fs=require('fs');
-          const before=JSON.parse(fs.readFileSync('/tmp/snapshots.json','utf8'));
-          const norm=j=>Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));
-          const b=norm(before);
-          let a=[];try{if(process.env.AFTER_CODE==='200')a=norm(JSON.parse(fs.readFileSync('/tmp/after.json','utf8')))}catch{}
-          const del=fs.readFileSync('/tmp/delete-results.ndjson','utf8').trim().split(/\n+/).filter(Boolean).map(x=>JSON.parse(x));
-          const bytes=r=>r.reduce((n,s)=>n+Number(s.sizeBytes||0),0);
-          const report={
-            ok:process.env.AFTER_CODE==='200',generatedAt:new Date().toISOString(),
-            policy:{keepBase:process.env.BASE_SNAPSHOT,keepLatest:Number(process.env.KEEP_LATEST),keepRecentHours:Number(process.env.KEEP_RECENT_HOURS)},
-            before:{count:b.length,bytes:bytes(b),gib:Number((bytes(b)/1073741824).toFixed(3))},
-            deletionAttempts:del,deleted:del.filter(x=>x.deleted).length,
-            after:{httpStatus:Number(process.env.AFTER_CODE||0),count:a.length,bytes:bytes(a),gib:Number((bytes(a)/1073741824).toFixed(3))},
-            remaining:a.map(s=>({id:s.id,sizeBytes:Number(s.sizeBytes||0),lastUsedAt:s.lastUsedAt||null,createdAt:s.createdAt||null,expiresAt:s.expiresAt||null,base:s.id===process.env.BASE_SNAPSHOT}))
-          };
-          fs.writeFileSync('SANDBOX_CLEANUP_REPORT.json',JSON.stringify(report,null,2)+'\n');
-          console.log(JSON.stringify(report));
+          (async()=>{
+            try{
+              if(!token){report.stage='credential';report.error='VERCEL_TOKEN missing';return;}
+              const first=await req(snapUrl);
+              report.listStatus=first.status;
+              if(!first.ok){report.stage='list';report.error=first.text.slice(0,2000);return;}
+              const rows=norm(first.json);
+              report.before={count:rows.length,bytes:bytes(rows),gib:Number((bytes(rows)/1073741824).toFixed(3))};
+              const ts=s=>Number(s?.lastUsedAt||s?.updatedAt||s?.createdAt||0);
+              const recentMs=keepRecentHours*3600*1000,now=Date.now();
+              const others=rows.filter(s=>s?.id&&s.id!==base).sort((a,b)=>ts(b)-ts(a));
+              const keep=new Set(others.slice(0,keepLatest).map(s=>s.id));
+              const candidates=others.filter(s=>!keep.has(s.id)&&!(ts(s)>0&&now-ts(s)<=recentMs));
+              report.candidates=candidates.map(s=>({id:s.id,sizeBytes:Number(s.sizeBytes||0),lastUsedAt:s.lastUsedAt||null,createdAt:s.createdAt||null,expiresAt:s.expiresAt||null}));
+              report.deletionAttempts=[];
+              for(const s of candidates){
+                const del=await req(`https://api.vercel.com/v2/sandboxes/snapshots/${encodeURIComponent(s.id)}?teamId=${encodeURIComponent(team)}`,{method:'DELETE'});
+                report.deletionAttempts.push({id:s.id,httpStatus:del.status,deleted:del.ok,body:del.text.slice(0,500)});
+              }
+              const after=await req(snapUrl);
+              report.afterStatus=after.status;
+              if(!after.ok){report.stage='relist';report.error=after.text.slice(0,2000);return;}
+              const remaining=norm(after.json);
+              report.deleted=report.deletionAttempts.filter(x=>x.deleted).length;
+              report.after={count:remaining.length,bytes:bytes(remaining),gib:Number((bytes(remaining)/1073741824).toFixed(3))};
+              report.remaining=remaining.map(s=>({id:s.id,sizeBytes:Number(s.sizeBytes||0),lastUsedAt:s.lastUsedAt||null,createdAt:s.createdAt||null,expiresAt:s.expiresAt||null,base:s.id===base}));
+              report.ok=true;report.stage='complete';
+            }catch(e){report.stage=report.stage||'exception';report.error=String(e?.stack||e).slice(0,4000)}
+            finally{fs.writeFileSync('SANDBOX_CLEANUP_REPORT.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));}
+          })();
           NODE
 
       - name: Save cleanup report
@@ -107,4 +86,4 @@ jobs:
           git commit -m "Record Sandbox cleanup result"
           git push
 
-# cleanup-trigger: 2026-08-25T04:29+09:00
+# cleanup-trigger: 2026-08-25T04:32+09:00
