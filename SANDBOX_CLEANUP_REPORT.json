@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-08-24T19:29:30.753Z",
+  "generatedAt": "2026-08-24T19:31:22.905Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -157,127 +157,127 @@
   "deletionAttempts": [
     {
       "id": "snap_h0RKgA9da42J21Kvl1Wdtfq0osmA",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_h0RKgA9da42J21Kvl1Wdtfq0osmA\",\"sourceSessionId\":\"sbx_djzEpiyXwoVvhnrutkpVoyDAAFsa\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":3033572982,\"expiresAt\":1789893487878,\"createdAt\":1787299485746,\"updatedAt\":1787299485746,\"lastUsedAt\":1787301487883,\"creationMethod\":\"automatic\",\"parentId\":\"snap_C5psqmDAwakTwzfa5kEYq2NIAxma\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_C5psqmDAwakTwzfa5kEYq2NIAxma",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_C5psqmDAwakTwzfa5kEYq2NIAxma\",\"sourceSessionId\":\"sbx_8YL8pRhSM5yF7Kk5U5UfEHYCi6kP\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":2483504716,\"expiresAt\":1789888836414,\"createdAt\":1787284325321,\"updatedAt\":1787284325321,\"lastUsedAt\":1787296836420,\"creationMethod\":\"automatic\",\"parentId\":\"snap_Z17h0UxmFQ1USAVwbUGGjwc9k1X2\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_Z17h0UxmFQ1USAVwbUGGjwc9k1X2",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_Z17h0UxmFQ1USAVwbUGGjwc9k1X2\",\"sourceSessionId\":\"sbx_SZPxchEucnivHlW7fCpANwhv9va8\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":2442526809,\"expiresAt\":1789873677180,\"createdAt\":1787281676407,\"updatedAt\":1787281676407,\"lastUsedAt\":1787281677195,\"creationMethod\":\"automatic\",\"parentId\":\"snap_rPURyd38sBBzwr5mYcaqOBr7qfuZ\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_rPURyd38sBBzwr5mYcaqOBr7qfuZ",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_rPURyd38sBBzwr5mYcaqOBr7qfuZ\",\"sourceSessionId\":\"sbx_ozMxGqx42Y1j0K3LhfpYTc8Si2zg\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":2438952113,\"expiresAt\":1789871027988,\"createdAt\":1787278805630,\"updatedAt\":1787278805630,\"lastUsedAt\":1787279027994,\"creationMethod\":\"automatic\",\"parentId\":\"snap_uzvy0zzbIIOt5QjoVrOMqhoqOorZ\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_uzvy0zzbIIOt5QjoVrOMqhoqOorZ",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_uzvy0zzbIIOt5QjoVrOMqhoqOorZ\",\"sourceSessionId\":\"sbx_NNJjM1ibFUuPFPL1FEQM49rQhcjU\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":2415586477,\"expiresAt\":1789868157171,\"createdAt\":1787274237155,\"updatedAt\":1787274237155,\"lastUsedAt\":1787276157176,\"creationMethod\":\"automatic\",\"parentId\":\"snap_pxNgG1jHFJZL7o9VsRwSfAeQPvog\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_pxNgG1jHFJZL7o9VsRwSfAeQPvog",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_pxNgG1jHFJZL7o9VsRwSfAeQPvog\",\"sourceSessionId\":\"sbx_IFsDzHADDwou7seZB7cQiHkHQyhy\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1793214620,\"expiresAt\":1789863588528,\"createdAt\":1787271437576,\"updatedAt\":1787271437576,\"lastUsedAt\":1787271588533,\"creationMethod\":\"automatic\",\"parentId\":\"snap_fVpkrHu0lNA4Zb0loNtUUtAlAVrd\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_fVpkrHu0lNA4Zb0loNtUUtAlAVrd",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_fVpkrHu0lNA4Zb0loNtUUtAlAVrd\",\"sourceSessionId\":\"sbx_M8W7maUfmKMbljtLfAhPloUy3RfN\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1294206716,\"expiresAt\":1789860791153,\"createdAt\":1787253044418,\"updatedAt\":1787253044418,\"lastUsedAt\":1787268791161,\"creationMethod\":\"automatic\",\"parentId\":\"snap_eegZ1DXGEgRQibOsoIxu5DJpv6Em\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_eegZ1DXGEgRQibOsoIxu5DJpv6Em",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_eegZ1DXGEgRQibOsoIxu5DJpv6Em\",\"sourceSessionId\":\"sbx_LeIbu7ZMiHB5GuHcqfn8QWZvXPRv\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1107795024,\"expiresAt\":1789842398978,\"createdAt\":1787247687040,\"updatedAt\":1787247687040,\"lastUsedAt\":1787250398983,\"creationMethod\":\"automatic\",\"parentId\":\"snap_bQ6u8hXsuQxSLRaNH8dxPTIMGNVR\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_bQ6u8hXsuQxSLRaNH8dxPTIMGNVR",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_bQ6u8hXsuQxSLRaNH8dxPTIMGNVR\",\"sourceSessionId\":\"sbx_C5PnYbygsjXkzv7KboddDj2OUzJA\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1107794482,\"expiresAt\":1789837041759,\"createdAt\":1787244789394,\"updatedAt\":1787244789394,\"lastUsedAt\":1787245041764,\"creationMethod\":\"automatic\",\"parentId\":\"snap_DgoAg2Z2HbEazrgvPofDyRgD8Yw4\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_DgoAg2Z2HbEazrgvPofDyRgD8Yw4",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_DgoAg2Z2HbEazrgvPofDyRgD8Yw4\",\"sourceSessionId\":\"sbx_U7y2wd2MIA0iPGD4KtFIjYDAsxW5\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1107789389,\"expiresAt\":1789834144197,\"createdAt\":1787179002191,\"updatedAt\":1787179002191,\"lastUsedAt\":1787242144203,\"creationMethod\":\"automatic\",\"parentId\":\"snap_ihqtOM4UTzTRwpQbZMtM4sikFmFK\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_ihqtOM4UTzTRwpQbZMtM4sikFmFK",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_ihqtOM4UTzTRwpQbZMtM4sikFmFK\",\"sourceSessionId\":\"sbx_TSKp0t3ZQwr3vGc3uLHRJQtoy0dp\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1107809992,\"expiresAt\":1789768356921,\"createdAt\":1787175868988,\"updatedAt\":1787175868988,\"lastUsedAt\":1787176356927,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_tpKXaKL6g3mex8l2KbpDPzc173JZ",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_tpKXaKL6g3mex8l2KbpDPzc173JZ\",\"sourceSessionId\":\"sbx_1bxdwrZZygAeMDXJ6lBXnoIqgeyb\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058450221,\"expiresAt\":1789762062586,\"createdAt\":1787170062592,\"updatedAt\":1787170062592,\"lastUsedAt\":1787170062591,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_t1H8I75aLEdO9ORd638GGklJHHYh",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_t1H8I75aLEdO9ORd638GGklJHHYh\",\"sourceSessionId\":\"sbx_g57KAhvbqKAnFdO4Km1wDROBMCTX\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058451177,\"expiresAt\":1789761795685,\"createdAt\":1787169795691,\"updatedAt\":1787169795691,\"lastUsedAt\":1787169795690,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_shf4YFQXTsN3Byg1y1OMGRh78nQc",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_shf4YFQXTsN3Byg1y1OMGRh78nQc\",\"sourceSessionId\":\"sbx_pwWI9i6rf3pcogyTTFguvtAZKTee\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058631780,\"expiresAt\":1789761312229,\"createdAt\":1787169312236,\"updatedAt\":1787169312236,\"lastUsedAt\":1787169312236,\"creationMethod\":\"automatic\",\"parentId\":\"snap_WOcqgDqAmeUneMTGcNnd7mflBCrg\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_FlR0mRQdt0Y4hyegSjnFbKl6FveS",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_FlR0mRQdt0Y4hyegSjnFbKl6FveS\",\"sourceSessionId\":\"sbx_yVfc1xLWYZBezU6Hf8DdSWSGR0HV\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058450982,\"expiresAt\":1789761197630,\"createdAt\":1787169197646,\"updatedAt\":1787169197646,\"lastUsedAt\":1787169197646,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_WOcqgDqAmeUneMTGcNnd7mflBCrg",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_WOcqgDqAmeUneMTGcNnd7mflBCrg\",\"sourceSessionId\":\"sbx_451eJcQ0jyzE7K2Vj7eI7Lgsh538\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058858424,\"expiresAt\":1789760866057,\"createdAt\":1787166013928,\"updatedAt\":1787166013928,\"lastUsedAt\":1787168866059,\"creationMethod\":\"manual\",\"parentId\":\"snap_gZMLPC8bSNuZX697aiZk8OgQadeW\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_gZMLPC8bSNuZX697aiZk8OgQadeW",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_gZMLPC8bSNuZX697aiZk8OgQadeW\",\"sourceSessionId\":\"sbx_wCsCG9UxTTPLntQHTucQcvWVsePg\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":979714384,\"expiresAt\":1789758001639,\"createdAt\":1787165794244,\"updatedAt\":1787165794244,\"lastUsedAt\":1787166001644,\"creationMethod\":\"manual\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_CsrTustQoFkNNwUqFijYq4K1NpPa",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_CsrTustQoFkNNwUqFijYq4K1NpPa\",\"sourceSessionId\":\"sbx_ZT6C9ROinillANohy6QHJiWMMbpx\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":976404615,\"expiresAt\":1789757909255,\"createdAt\":1787165909262,\"updatedAt\":1787165909262,\"lastUsedAt\":1787165909262,\"creationMethod\":\"automatic\",\"parentId\":\"snap_gZMLPC8bSNuZX697aiZk8OgQadeW\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_UPsKtUOrgO2qf0D2C3S9aD7kjBkK",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_UPsKtUOrgO2qf0D2C3S9aD7kjBkK\",\"sourceSessionId\":\"sbx_ecYmwvcGfWbvbyYB3JcLbGZgdj6l\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":642298348,\"expiresAt\":1789757850456,\"createdAt\":1787165850462,\"updatedAt\":1787165850462,\"lastUsedAt\":1787165850461,\"creationMethod\":\"automatic\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_0UM19eMpsnEl2LBk0qMKKZbN8PMa",
-      "httpStatus": 200,
-      "deleted": true,
-      "body": "{\"snapshot\":{\"id\":\"snap_0UM19eMpsnEl2LBk0qMKKZbN8PMa\",\"sourceSessionId\":\"sbx_QpPWN03QMaHdwo9BSAJ4LrJcDoGJ\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":642290561,\"expiresAt\":1789757731906,\"createdAt\":1787165731914,\"updatedAt\":1787165731914,\"lastUsedAt\":1787165731913,\"creationMethod\":\"automatic\"}}"
+      "httpStatus": 400,
+      "deleted": false,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     }
   ],
   "afterStatus": 200,
-  "deleted": 20,
+  "deleted": 0,
   "after": {
     "count": 24,
     "bytes": 37050551597,
