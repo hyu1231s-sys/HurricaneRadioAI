@@ -44,3 +44,4 @@ jobs:
             freed=$((freed+1))
           done < /tmp/expired.txt
           echo "deleted_expired_snapshots=$freed"
+          echo "cleanup_trigger=2026-08-25T04:18+09:00"
