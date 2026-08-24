@@ -1,1 +1,1 @@
-{"name":"hurricane-radio-ai","version":"4.4.19-rc14.19-deploy-ready","type":"module","scripts":{"postinstall":"node scripts/restore-rc1419.mjs"},"dependencies":{"@vercel/sandbox":"latest"}}
+{"name":"hurricane-radio-ai","version":"4.4.21-rc14.21-longform-eta","type":"module","scripts":{"postinstall":"node scripts/restore-rc1421.mjs"},"dependencies":{"@vercel/sandbox":"latest"}}
