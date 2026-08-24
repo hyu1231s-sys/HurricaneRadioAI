@@ -1,0 +1,41 @@
+name: Sandbox Snapshot Storage Audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/sandbox-storage-audit.yml']
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check credential
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          test -n "$VERCEL_TOKEN" || { echo '::error::VERCEL_TOKEN missing'; exit 2; }
+      - name: List Sandbox snapshots
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
+          PROJECT_ID: prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu
+          BASE_SNAPSHOT: snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip
+        run: |
+          set -euo pipefail
+          curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=desc&teamId=$TEAM_ID" \
+            -o /tmp/snapshots.json
+          node <<'NODE'
+          const fs=require('fs');
+          const j=JSON.parse(fs.readFileSync('/tmp/snapshots.json','utf8'));
+          const rows=Array.isArray(j)?j:(j.data||j.snapshots||j.data?.snapshots||[]);
+          const base=process.env.BASE_SNAPSHOT;
+          let total=0;
+          console.log('SNAPSHOT_AUDIT_BEGIN');
+          for(const s of rows){
+            const bytes=Number(s.sizeBytes||0); total+=bytes;
+            console.log(JSON.stringify({id:s.id,keepBase:s.id===base,sizeBytes:bytes,sizeMiB:Number((bytes/1048576).toFixed(1)),createdAt:s.createdAt,lastUsedAt:s.lastUsedAt,expiresAt:s.expiresAt,status:s.status,creationMethod:s.creationMethod,parentId:s.parentId||null,sourceSessionId:s.sourceSessionId||null}));
+          }
+          console.log(JSON.stringify({snapshotCount:rows.length,totalBytes:total,totalGiB:Number((total/1073741824).toFixed(3)),baseSnapshot:base}));
+          console.log('SNAPSHOT_AUDIT_END');
+          NODE
