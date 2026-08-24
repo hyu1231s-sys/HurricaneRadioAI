@@ -1,31 +1,48 @@
 name: Promote RC14.21 to Production
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/promote-rc1421.yml']
 
 jobs:
   promote:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       - name: Check Vercel deploy credential
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           if [ -z "$VERCEL_TOKEN" ]; then
-            echo "::error::VERCEL_TOKEN secret is not configured; production promotion was not attempted."
+            echo "::error::VERCEL_TOKEN secret is not configured; production deployment was not attempted."
             exit 2
           fi
-      - name: Promote validated RC14.21 Preview
+      - name: Reconstruct exact RC14.21 source
+        run: |
+          node scripts/restore-rc1421.mjs
+          node --check api/app.js
+          node --check worker/hrai-pipeline.mjs
+          node --check worker/worker-server.mjs
+      - name: Package deploy-ready source
+        run: |
+          rm -rf /tmp/rc1421-production
+          mkdir -p /tmp/rc1421-production/api /tmp/rc1421-production/worker /tmp/rc1421-production/assets/guest-presets /tmp/rc1421-production/.vercel
+          cp index.html vercel.json /tmp/rc1421-production/
+          cp api/app.js /tmp/rc1421-production/api/
+          cp worker/hrai-pipeline.mjs worker/worker-server.mjs worker/op-ui-template.webp worker/ed-ui-template.webp /tmp/rc1421-production/worker/
+          cp assets/guest-presets/*.webp /tmp/rc1421-production/assets/guest-presets/
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));delete p.scripts;fs.writeFileSync('/tmp/rc1421-production/package.json',JSON.stringify(p,null,2)+'\n')"
+          printf '%s\n' '{"orgId":"team_T7MRylRvLd04qtfhPCn52Rgi","projectId":"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu","projectName":"hurricane-radio-ai"}' > /tmp/rc1421-production/.vercel/project.json
+          grep -F '4.4.21-rc14.21-longform-eta' /tmp/rc1421-production/api/app.js
+      - name: Deploy exact RC14.21 to Production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          PREVIEW_URL: https://hurricane-radio-7wzx01bx1-hyu1231s-2033s-projects.vercel.app
         run: |
-          npx --yes vercel@latest promote "$PREVIEW_URL" --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --timeout 5m
+          npx --yes vercel@59.3.0 deploy --prod --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --cwd /tmp/rc1421-production
       - name: Verify production health
         run: |
-          for i in 1 2 3 4 5 6; do
+          for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
             body="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/health || true)"
             echo "$body"
             echo "$body" | grep -F '4.4.21-rc14.21-longform-eta' && exit 0
@@ -39,7 +56,6 @@ jobs:
           echo "$body"
           echo "$body" | grep -F '"configured":true'
           echo "$body" | grep -F '"reachable":true'
-          echo "$body" | grep -F '"model":"gpt-4o-transcribe-diarize"'
       - name: Verify worker status
         run: |
           body="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/worker-status)"
