@@ -23,4 +23,17 @@ for(const [dst,b64data] of Object.entries(payload.files||{})){
   console.log(`restored ${dst} ${raw.length} ${sha}`);
 }
 if(Object.keys(payload.files||{}).length!==Object.keys(manifest.files).length)throw new Error('RC14.21_FILE_COUNT_MISMATCH');
+
+// Production hotfix: bound per-job persistent Sandbox snapshots so completed/abandoned
+// jobs cannot consume Sandbox snapshot storage indefinitely. 24h still allows normal
+// same-day reconnect/resume while expired snapshots become eligible for cleanup.
+const apiPath=path.join(root,'api/app.js');
+let api=fs.readFileSync(apiPath,'utf8');
+const oldMk="async function mk(n,persistent=true,timeout=2640000){return Sandbox.create({name:n,source:{type:'snapshot',snapshotId:SNAP},ports:[],timeout,resources:{vcpus:2},persistent})}";
+const newMk="async function mk(n,persistent=true,timeout=2640000){return Sandbox.create({name:n,source:{type:'snapshot',snapshotId:SNAP},ports:[],timeout,resources:{vcpus:2},persistent,snapshotExpiration:24*60*60*1000})}";
+if(!api.includes(oldMk))throw new Error('RC14.21_SANDBOX_RETENTION_PATCH_TARGET_MISSING');
+api=api.replace(oldMk,newMk);
+fs.writeFileSync(apiPath,api);
+console.log('applied Sandbox snapshotExpiration=24h hotfix');
+
 console.log(`RC14.21 bootstrap complete (${manifest.version}) bundle=${bundleSha}`);
