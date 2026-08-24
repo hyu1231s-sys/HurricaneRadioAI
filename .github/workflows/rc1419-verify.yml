@@ -1,0 +1,49 @@
+name: RC14.19 Verify
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [rc14.19-preview]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify bundle and restore source
+        run: node scripts/restore-rc1419.mjs
+      - name: Node syntax checks
+        run: |
+          node --check api/app.js
+          node --check worker/hrai-pipeline.mjs
+          node --check worker/worker-server.mjs
+      - name: Inline UI JavaScript syntax
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const s=fs.readFileSync('index.html','utf8');
+          const m=s.match(/<script>([\s\S]*?)<\/script>/);
+          if(!m) throw new Error('INLINE_SCRIPT_NOT_FOUND');
+          fs.writeFileSync('/tmp/hrai-inline.js',m[1]);
+          NODE
+          node --check /tmp/hrai-inline.js
+      - name: RC14.19 integrity markers
+        run: |
+          grep -q "4.4.19-rc14.19-deploy-ready" api/app.js
+          grep -q "4.4.19-rc14.19-deploy-ready" worker/hrai-pipeline.mjs
+          grep -q "4.4.19-rc14.19-deploy-ready" worker/worker-server.mjs
+          grep -q "RC14.19" index.html
+          grep -q "idempotentChunkUpload:true" api/app.js
+          grep -q "sandboxOpEdTemplateSync:true" api/app.js
+          grep -q "ultrafastLongForm:true" api/app.js
+          test -s worker/op-ui-template.webp
+          test -s worker/ed-ui-template.webp
+          test "$(find assets/guest-presets -name 'guest-*.webp' | wc -l)" -eq 10
+      - name: Package snapshot
+        run: |
+          du -sh .
+          find api worker assets -type f -maxdepth 3 -printf '%p %s bytes\n' | sort
