@@ -30,6 +30,9 @@ jobs:
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
           grep -F 'snapshotExpiration:24*60*60*1000' api/app.js
+          grep -F 'resumableUpload:true' api/app.js
+          grep -F 'const size=750000' index.html
+          grep -F 'iPadで転送が途中になった可能性があります' index.html
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
