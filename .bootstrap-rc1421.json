@@ -1,0 +1,29 @@
+{
+  "version": "4.4.21-rc14.21-longform-eta",
+  "bundle": {
+    "format": "gzip-json-base64-chunks",
+    "bytes": 184459,
+    "sha256": "1cf7e35270e6ae773462c0bdaff19de6da3b6828d4c0bc68be4fcc3516de1548",
+    "base64Chars": 245948,
+    "chunkChars": 9000,
+    "chunks": 28
+  },
+  "files": {
+    "index.html": {"bytes": 31591,"sha256": "e85a27ed361676c2333b9649bde3a7cfe9e50b771975736f15c0f10f7e14b469"},
+    "api/app.js": {"bytes": 46977,"sha256": "8b799deebe9899e68f84a0428f764c88b6d1cdee48d6c8dfad29516ec6329263"},
+    "worker/hrai-pipeline.mjs": {"bytes": 64570,"sha256": "c900a0917dff0cc7769e4c138818d231df671dacfe49fbe777d2625b69db8ae0"},
+    "worker/worker-server.mjs": {"bytes": 7535,"sha256": "d9ec1088aa52b9b414b0e08a6deb3ddc48eb1982aee8a954cafa3243254f6b97"},
+    "worker/op-ui-template.webp": {"bytes": 13434,"sha256": "1ebdb7c593cf63a94d65c4b69dedb6ffadccd3dfb1bbc42ef9e59d2362589c89"},
+    "worker/ed-ui-template.webp": {"bytes": 13672,"sha256": "1c4952bc900e1bc15691faa4e652034171f7c84b86df7116da047d6e0242bc69"},
+    "assets/guest-presets/guest-00.webp": {"bytes": 10266,"sha256": "357821db17a223677373b8097f28ca2d6d8f7adc9c50f6d6f18ec47dcdc8b6a3"},
+    "assets/guest-presets/guest-01.webp": {"bytes": 6708,"sha256": "5a103960140b4a5d138467f24fa7515a86802dbe65180a5e4cf99e70a4817865"},
+    "assets/guest-presets/guest-02.webp": {"bytes": 9702,"sha256": "a4ba09940351a3ddc0f2394809620f4e239ab6fd914787dd5da10a5fb4eeed07"},
+    "assets/guest-presets/guest-03.webp": {"bytes": 10034,"sha256": "2cde36e2d1ea6a1ce6ec7e3a93381de242d61ad98b8994274a20e5f9018f3957"},
+    "assets/guest-presets/guest-04.webp": {"bytes": 8788,"sha256": "60dd6594ea2590b86557177296911c99932389c033c224342a5ab0091a7c98ae"},
+    "assets/guest-presets/guest-05.webp": {"bytes": 8322,"sha256": "64f742ae594e09b11eaef8bacd336b596006454cdc8e5455e0bb8bbb49420030"},
+    "assets/guest-presets/guest-06.webp": {"bytes": 9100,"sha256": "f22cce8e5e379f412c47fd8780ffa7a3b36a4b97882aa1691034ca2ed4633f41"},
+    "assets/guest-presets/guest-07.webp": {"bytes": 8654,"sha256": "b4e34db24c79777cc77307fa803bf39d1472969f1341c765b01a16d5b308e99e"},
+    "assets/guest-presets/guest-08.webp": {"bytes": 7984,"sha256": "127ccd5d77805b6cf80f9261b3e5c309801baae7e867b555664c3fedd391c7"},
+    "assets/guest-presets/guest-09.webp": {"bytes": 7666,"sha256": "c12824908b2d57a2aa37b2c9d46d9b51766b7e110112d6a3ef8d5f430d70d2c8"}
+  }
+}
