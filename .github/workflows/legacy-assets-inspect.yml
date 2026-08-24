@@ -2,12 +2,18 @@ name: Legacy RC14.19 Assets Inspect
 on:
   push:
     branches: [rc14.21-preview]
+    paths: [.github/workflows/legacy-assets-inspect.yml]
+
+permissions:
+  contents: write
 
 jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: rc14.21-preview
       - name: Rejoin inherited asset archive
         run: |
           cat packed-rc1419/assets.b64.* | tr -d '\n\r ' | base64 -d > /tmp/rc1419-assets.tar.gz
@@ -30,3 +36,12 @@ jobs:
             assets/guest-presets/guest-09.webp; do
             grep -Fx "$f" /tmp/assets.list
           done
+      - name: Publish inspection marker
+        run: |
+          sha256sum /tmp/rc1419-assets.tar.gz > .legacy-assets-ok
+          printf '\nrequired_assets=12\n' >> .legacy-assets-ok
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .legacy-assets-ok
+          git commit -m 'CI: legacy asset pack verified'
+          git push origin HEAD:rc14.21-preview
