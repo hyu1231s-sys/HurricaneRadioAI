@@ -1,0 +1,37 @@
+name: RC14.21 Verify
+on:
+  push:
+    branches: [rc14.21-preview]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Reconstruct RC14.21 and verify SHA256
+        run: node scripts/restore-rc1421.mjs
+      - name: Node syntax
+        run: |
+          node --check api/app.js
+          node --check worker/hrai-pipeline.mjs
+          node --check worker/worker-server.mjs
+      - name: Inline UI JavaScript syntax
+        run: |
+          node scripts/check-inline-js.mjs
+          node --check /tmp/hrai-inline-rc1421.js
+      - name: RC14.21 invariants
+        run: |
+          grep -F "4.4.21-rc14.21-longform-eta" api/app.js
+          grep -F "HurricaneRadioAI RC14.21" index.html
+          grep -F "'-ss',String(start),'-t',String(len),'-i',SOURCE" worker/hrai-pipeline.mjs
+          grep -F "function renderRanges" worker/hrai-pipeline.mjs
+          grep -F "inputTrimmedRenderBlocks:true" worker/hrai-pipeline.mjs
+          grep -F "tinyTailMerged:true" worker/hrai-pipeline.mjs
+          grep -F "longFormEta:true" worker/hrai-pipeline.mjs
+          grep -F "renderEtaSeconds" worker/hrai-pipeline.mjs
+          test "$(grep -o "'-threads','1','-filter_threads','1','-filter_complex_threads','1'" worker/hrai-pipeline.mjs | wc -l)" -ge 3
