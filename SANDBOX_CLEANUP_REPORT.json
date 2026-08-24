@@ -1,1 +1,12 @@
-{"ok":false,"stage":"unknown","error":"report missing"}
+{
+  "ok": false,
+  "generatedAt": "2026-08-24T19:28:43.895Z",
+  "policy": {
+    "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
+    "keepLatest": 3,
+    "keepRecentHours": 6
+  },
+  "listStatus": 400,
+  "stage": "list",
+  "error": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Invalid request: `limit` should be <= 50.\"}}"
+}
