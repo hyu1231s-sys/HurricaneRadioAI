@@ -3,7 +3,9 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['.github/workflows/promote-rc1421.yml']
+    paths:
+      - '.github/workflows/promote-rc1421.yml'
+      - 'scripts/restore-rc1421.mjs'
 
 jobs:
   promote:
@@ -27,6 +29,7 @@ jobs:
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
+          grep -F 'snapshotExpiration:24*60*60*1000' api/app.js
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
