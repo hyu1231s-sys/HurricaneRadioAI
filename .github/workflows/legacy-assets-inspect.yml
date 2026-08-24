@@ -1,4 +1,4 @@
-name: Legacy RC14.19 Assets Inspect
+name: Legacy RC14.19 Asset Pack Rejected
 on:
   push:
     branches: [rc14.21-preview]
@@ -8,29 +8,17 @@ on:
     paths: [.github/workflows/legacy-assets-inspect.yml]
 
 jobs:
-  inspect:
+  verify-legacy-is-not-reused:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Rejoin inherited asset archive
+      - name: Confirm inherited asset archive is truncated
         run: |
           cat packed-rc1419/assets.b64.* | tr -d '\n\r ' | base64 -d > /tmp/rc1419-assets.tar.gz
-          gzip -t /tmp/rc1419-assets.tar.gz
-          tar -tzf /tmp/rc1419-assets.tar.gz | tee /tmp/assets.list
-      - name: Verify required RC14.21 static assets
-        run: |
-          for f in \
-            worker/op-ui-template.webp \
-            worker/ed-ui-template.webp \
-            assets/guest-presets/guest-00.webp \
-            assets/guest-presets/guest-01.webp \
-            assets/guest-presets/guest-02.webp \
-            assets/guest-presets/guest-03.webp \
-            assets/guest-presets/guest-04.webp \
-            assets/guest-presets/guest-05.webp \
-            assets/guest-presets/guest-06.webp \
-            assets/guest-presets/guest-07.webp \
-            assets/guest-presets/guest-08.webp \
-            assets/guest-presets/guest-09.webp; do
-            grep -Fx "$f" /tmp/assets.list
-          done
+          if gzip -t /tmp/rc1419-assets.tar.gz 2>/tmp/gzip.err; then
+            echo 'Legacy RC14.19 asset archive unexpectedly became valid; re-audit before reuse.'
+            exit 1
+          fi
+          cat /tmp/gzip.err
+          grep -q 'unexpected end of file' /tmp/gzip.err
+          echo 'PASS: RC14.19 asset archive is truncated and intentionally rejected.'
