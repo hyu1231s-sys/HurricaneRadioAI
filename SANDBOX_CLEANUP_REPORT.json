@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-08-24T19:31:22.905Z",
+  "generatedAt": "2026-08-24T19:33:03.663Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -158,126 +158,146 @@
     {
       "id": "snap_h0RKgA9da42J21Kvl1Wdtfq0osmA",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_C5psqmDAwakTwzfa5kEYq2NIAxma",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_Z17h0UxmFQ1USAVwbUGGjwc9k1X2",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_rPURyd38sBBzwr5mYcaqOBr7qfuZ",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_uzvy0zzbIIOt5QjoVrOMqhoqOorZ",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_pxNgG1jHFJZL7o9VsRwSfAeQPvog",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_fVpkrHu0lNA4Zb0loNtUUtAlAVrd",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_eegZ1DXGEgRQibOsoIxu5DJpv6Em",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_bQ6u8hXsuQxSLRaNH8dxPTIMGNVR",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_DgoAg2Z2HbEazrgvPofDyRgD8Yw4",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_ihqtOM4UTzTRwpQbZMtM4sikFmFK",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_tpKXaKL6g3mex8l2KbpDPzc173JZ",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_t1H8I75aLEdO9ORd638GGklJHHYh",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_shf4YFQXTsN3Byg1y1OMGRh78nQc",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_FlR0mRQdt0Y4hyegSjnFbKl6FveS",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_WOcqgDqAmeUneMTGcNnd7mflBCrg",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_gZMLPC8bSNuZX697aiZk8OgQadeW",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_CsrTustQoFkNNwUqFijYq4K1NpPa",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_UPsKtUOrgO2qf0D2C3S9aD7kjBkK",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_0UM19eMpsnEl2LBk0qMKKZbN8PMa",
       "httpStatus": 400,
-      "deleted": false,
+      "deleted": true,
+      "alreadyGone": true,
       "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     }
   ],
   "afterStatus": 200,
-  "deleted": 0,
+  "deleted": 20,
   "after": {
     "count": 24,
     "bytes": 37050551597,
@@ -477,5 +497,15 @@
       "base": false
     }
   ],
-  "stage": "complete"
+  "stage": "complete",
+  "capacitySmoke": {
+    "name": "hrai-capacity-smoke-32768792036",
+    "createStatus": 200,
+    "created": true,
+    "createBody": "{\"sandbox\":{\"name\":\"hrai-capacity-smoke-32768792036\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"status\":\"running\",\"statusUpdatedAt\":1787600026032,\"persistent\":false,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"cwd\":\"/vercel\",\"createdAt\":1787600026032,\"updatedAt\":1787600026032},\"session\":{\"id\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"runtime\":\"node22\",\"requestedAt\":1787600025754,\"startedAt\":1787600025899,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1787600025754,\"updatedAt\":1787600025945,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-capacity-smoke-32768792036\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
+    "deleteStatus": 200,
+    "deleted": true,
+    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-capacity-smoke-32768792036\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"status\":\"running\",\"statusUpdatedAt\":1787600026032,\"persistent\":false,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"cwd\":\"/vercel\",\"createdAt\":1787600026032,\"updatedAt\":1787600026032}}"
+  },
+  "newSandboxCapacityOk": true
 }
