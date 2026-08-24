@@ -35,7 +35,7 @@ jobs:
           const report={ok:false,generatedAt:new Date().toISOString(),policy:{keepBase:base,keepLatest,keepRecentHours}};
           const norm=j=>Array.isArray(j)?j:(Array.isArray(j?.data)?j.data:(j?.snapshots||j?.data?.snapshots||[]));
           const bytes=r=>r.reduce((n,s)=>n+Number(s?.sizeBytes||0),0);
-          const snapUrl=`https://api.vercel.com/v2/sandboxes/snapshots?project=${encodeURIComponent(project)}&limit=100&sortOrder=desc&teamId=${encodeURIComponent(team)}`;
+          const snapUrl=`https://api.vercel.com/v2/sandboxes/snapshots?project=${encodeURIComponent(project)}&limit=50&sortOrder=desc&teamId=${encodeURIComponent(team)}`;
           async function req(url,opts={}){
             const r=await fetch(url,{...opts,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opts.headers||{})}});
             const text=await r.text();
@@ -86,4 +86,4 @@ jobs:
           git commit -m "Record Sandbox cleanup result"
           git push
 
-# cleanup-trigger: 2026-08-25T04:32+09:00
+# cleanup-trigger: 2026-08-25T04:35+09:00
