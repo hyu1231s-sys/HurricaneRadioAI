@@ -1,4 +1,4 @@
-name: Cleanup Expired Sandbox Snapshots
+name: Cleanup Sandbox Snapshots
 on:
   workflow_dispatch:
   push:
@@ -11,37 +11,68 @@ jobs:
   cleanup:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove expired snapshots only
+      - name: Keep base + recent snapshots, remove old storage
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
           PROJECT_ID: prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu
           BASE_SNAPSHOT: snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip
+          KEEP_LATEST: '3'
+          KEEP_RECENT_HOURS: '6'
         run: |
           set -euo pipefail
           test -n "$VERCEL_TOKEN" || { echo '::error::VERCEL_TOKEN missing'; exit 2; }
+
           curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=asc&teamId=$TEAM_ID" \
+            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=desc&teamId=$TEAM_ID" \
             -o /tmp/snapshots.json
-          node <<'NODE' > /tmp/expired.txt
+
+          node <<'NODE' > /tmp/delete.txt
           const fs=require('fs');
           const j=JSON.parse(fs.readFileSync('/tmp/snapshots.json','utf8'));
           const rows=Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));
-          const now=Date.now(), base=process.env.BASE_SNAPSHOT;
-          for(const s of rows){
-            const exp=Number(s.expiresAt||0);
-            if(s.id && s.id!==base && exp>0 && exp<=now) console.log(s.id);
+          const base=process.env.BASE_SNAPSHOT;
+          const keepLatest=Math.max(0,Number(process.env.KEEP_LATEST||3));
+          const recentMs=Math.max(0,Number(process.env.KEEP_RECENT_HOURS||6))*3600*1000;
+          const now=Date.now();
+          const ts=s=>Number(s.lastUsedAt||s.updatedAt||s.createdAt||0);
+          const active=rows.filter(s=>s&&s.id&&s.id!==base).sort((a,b)=>ts(b)-ts(a));
+          const keep=new Set(active.slice(0,keepLatest).map(s=>s.id));
+          for(const s of active){
+            const t=ts(s), exp=Number(s.expiresAt||0);
+            const recent=t>0 && now-t<=recentMs;
+            const expired=exp>0 && exp<=now;
+            if(keep.has(s.id) || recent) continue;
+            // Anything old enough and not in the protected recent set can be removed.
+            // Expired snapshots are always eligible here as well.
+            console.log(s.id);
           }
           NODE
-          count=$(grep -c '^snap_' /tmp/expired.txt || true)
-          echo "expired_snapshot_count=$count"
-          freed=0
+
+          total=$(node -e "const j=require('/tmp/snapshots.json');const r=Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));console.log(r.length)")
+          count=$(grep -c '^snap_' /tmp/delete.txt || true)
+          echo "snapshot_count_before=$total"
+          echo "delete_candidate_count=$count"
+
+          deleted=0
           while read -r id; do
             [ -n "$id" ] || continue
-            echo "Deleting expired snapshot $id"
+            echo "Deleting old snapshot $id"
             curl -fsS -X DELETE -H "Authorization: Bearer $VERCEL_TOKEN" \
               "https://api.vercel.com/v2/sandboxes/snapshots/$id?teamId=$TEAM_ID" >/dev/null
-            freed=$((freed+1))
-          done < /tmp/expired.txt
-          echo "deleted_expired_snapshots=$freed"
-          echo "cleanup_trigger=2026-08-25T04:18+09:00"
+            deleted=$((deleted+1))
+          done < /tmp/delete.txt
+          echo "deleted_snapshots=$deleted"
+
+          curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/sandboxes/snapshots?project=$PROJECT_ID&limit=100&sortOrder=desc&teamId=$TEAM_ID" \
+            -o /tmp/after.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const j=JSON.parse(fs.readFileSync('/tmp/after.json','utf8'));
+          const r=Array.isArray(j)?j:(Array.isArray(j.data)?j.data:(j.snapshots||j.data?.snapshots||[]));
+          const bytes=r.reduce((n,s)=>n+Number(s.sizeBytes||0),0);
+          console.log(`snapshot_count_after=${r.length}`);
+          console.log(`snapshot_bytes_after=${bytes}`);
+          console.log(`snapshot_gib_after=${(bytes/1024/1024/1024).toFixed(3)}`);
+          NODE
