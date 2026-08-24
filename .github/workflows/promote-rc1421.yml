@@ -1,0 +1,34 @@
+name: Promote RC14.21 to Production
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/promote-rc1421.yml']
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Vercel deploy credential
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::VERCEL_TOKEN secret is not configured; production promotion was not attempted."
+            exit 2
+          fi
+      - name: Promote validated RC14.21 Preview
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PREVIEW_URL: https://hurricane-radio-7wzx01bx1-hyu1231s-2033s-projects.vercel.app
+        run: |
+          npx --yes vercel@latest promote "$PREVIEW_URL" --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --timeout 5m
+      - name: Verify production health
+        run: |
+          for i in 1 2 3 4 5 6; do
+            body="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/health || true)"
+            echo "$body"
+            echo "$body" | grep -F '4.4.21-rc14.21-longform-eta' && exit 0
+            sleep 5
+          done
+          echo "::error::Production health did not report RC14.21"
+          exit 1
