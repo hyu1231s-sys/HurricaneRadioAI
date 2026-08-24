@@ -1,1 +1,1 @@
-{"name":"hurricane-radio-ai","version":"4.4.2-rc14.2-bust-up-default","type":"module","dependencies":{"@vercel/sandbox":"latest"}}
+{"name":"hurricane-radio-ai-rc1419-transport","version":"4.4.19","private":true,"type":"module","scripts":{"postinstall":"node scripts/restore-rc1419.mjs"},"dependencies":{"@vercel/sandbox":"latest"}}
