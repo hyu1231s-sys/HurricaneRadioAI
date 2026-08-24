@@ -35,3 +35,20 @@ jobs:
           grep -F "longFormEta:true" worker/hrai-pipeline.mjs
           grep -F "renderEtaSeconds" worker/hrai-pipeline.mjs
           test "$(grep -o "'-threads','1','-filter_threads','1','-filter_complex_threads','1'" worker/hrai-pipeline.mjs | wc -l)" -ge 3
+      - name: Package exact RC14.21 preview source
+        run: |
+          rm -rf /tmp/rc1421-preview-source
+          mkdir -p /tmp/rc1421-preview-source/api /tmp/rc1421-preview-source/worker /tmp/rc1421-preview-source/assets/guest-presets
+          cp index.html package.json vercel.json /tmp/rc1421-preview-source/
+          cp api/app.js /tmp/rc1421-preview-source/api/
+          cp worker/hrai-pipeline.mjs worker/worker-server.mjs worker/op-ui-template.webp worker/ed-ui-template.webp /tmp/rc1421-preview-source/worker/
+          cp assets/guest-presets/*.webp /tmp/rc1421-preview-source/assets/guest-presets/
+          tar -C /tmp/rc1421-preview-source -czf /tmp/HurricaneRadioAI-RC14.21-preview-source.tgz .
+          sha256sum /tmp/HurricaneRadioAI-RC14.21-preview-source.tgz
+      - name: Upload exact RC14.21 preview source
+        uses: actions/upload-artifact@v4
+        with:
+          name: rc1421-preview-source
+          path: /tmp/HurricaneRadioAI-RC14.21-preview-source.tgz
+          if-no-files-found: error
+          retention-days: 7
