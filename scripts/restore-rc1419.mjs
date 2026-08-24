@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 
 const BUNDLE='rc1419-source-bundle.tgz';
-const EXPECTED='eac0abecb827a6c2d2f245110cf1628f39ff6e8189538d360dd13a784ef2c3f3';
+const EXPECTED='172af29f242427fb601b6247a7ec939c2745ca9372a4c0075b6c5d32496f6b20';
 const h=crypto.createHash('sha256');
 await new Promise((ok,bad)=>{const r=fs.createReadStream(BUNDLE);r.on('data',d=>h.update(d));r.on('error',bad);r.on('end',ok)});
 const got=h.digest('hex');
