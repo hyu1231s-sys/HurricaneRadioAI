@@ -1,0 +1,31 @@
+name: Nonpersistent Sandbox Smoke
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/nonpersistent-sandbox-smoke.yml']
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create nonpersistent Sandbox and remove it
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
+          PROJECT_ID: prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu
+          BASE_SNAPSHOT: snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip
+        run: |
+          node <<'NODE'
+          const token=process.env.VERCEL_TOKEN,team=process.env.TEAM_ID,project=process.env.PROJECT_ID,base=process.env.BASE_SNAPSHOT;
+          const name=`hrai-nonpersistent-${process.env.GITHUB_RUN_ID}`;
+          async function req(url,opts={}){const r=await fetch(url,{...opts,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'}});const text=await r.text();console.log(opts.method||'GET',r.status,text.slice(0,2000));return {r,text};}
+          (async()=>{
+            const body={name,projectId:project,source:{type:'snapshot',snapshotId:base},ports:[],timeout:120000,resources:{vcpus:2},persistent:false};
+            const create=await req(`https://api.vercel.com/v2/sandboxes?teamId=${encodeURIComponent(team)}`,{method:'POST',body:JSON.stringify(body)});
+            const ok=create.r.ok;
+            const del=await req(`https://api.vercel.com/v2/sandboxes/${encodeURIComponent(name)}?projectId=${encodeURIComponent(project)}&teamId=${encodeURIComponent(team)}`,{method:'DELETE'}).catch(e=>({r:{status:0,ok:false},text:String(e)}));
+            console.log('NONPERSISTENT_RESULT',JSON.stringify({createStatus:create.r.status,created:ok,deleteStatus:del.r.status,deleted:del.r.ok}));
+            if(!ok)process.exit(2);
+          })().catch(e=>{console.error(e);process.exit(3)});
+          NODE
