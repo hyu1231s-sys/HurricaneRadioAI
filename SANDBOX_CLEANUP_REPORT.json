@@ -1,6 +1,6 @@
 {
   "ok": false,
-  "generatedAt": "2026-08-25T10:28:01.400Z",
+  "generatedAt": "2026-08-25T19:49:38.891Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -185,31 +185,31 @@
   "deletionAttempts": [
     {
       "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
-      "httpStatus": 200,
+      "httpStatus": 400,
       "deleted": true,
-      "alreadyGone": false,
-      "body": "{\"snapshot\":{\"id\":\"snap_EAClThxINAz27LBAMqdDJphnTPAH\",\"sourceSessionId\":\"sbx_G2UL7toxvfc9GdqiLqLiWOu3oFco\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058470466,\"expiresAt\":1790193306750,\"createdAt\":1787601306756,\"updatedAt\":1787601306756,\"lastUsedAt\":1787601306755,\"creationMethod\":\"automatic\",\"parentId\":\"snap_k83TjtRXTPvJZyU3dAmDAx60Byh8\"}}"
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_k83TjtRXTPvJZyU3dAmDAx60Byh8",
-      "httpStatus": 200,
+      "httpStatus": 400,
       "deleted": true,
-      "alreadyGone": false,
-      "body": "{\"snapshot\":{\"id\":\"snap_k83TjtRXTPvJZyU3dAmDAx60Byh8\",\"sourceSessionId\":\"sbx_mEgUqx4JvUk0ccKiv6JZqbZbv2RE\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058459744,\"expiresAt\":1790190662407,\"createdAt\":1787244742136,\"updatedAt\":1787244742136,\"lastUsedAt\":1787598662413,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_vbhHZqa8SrNhg9L2lSFFReAp9aws",
-      "httpStatus": 200,
+      "httpStatus": 400,
       "deleted": true,
-      "alreadyGone": false,
-      "body": "{\"snapshot\":{\"id\":\"snap_vbhHZqa8SrNhg9L2lSFFReAp9aws\",\"sourceSessionId\":\"sbx_2VJBxdOpmQWydrQwPQyF4KqAljSE\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":3033576318,\"expiresAt\":1789923967459,\"createdAt\":1787331967465,\"updatedAt\":1787331967465,\"lastUsedAt\":1787331967464,\"creationMethod\":\"automatic\",\"parentId\":\"snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc\"}}"
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc",
-      "httpStatus": 200,
+      "httpStatus": 400,
       "deleted": true,
-      "alreadyGone": false,
-      "body": "{\"snapshot\":{\"id\":\"snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc\",\"sourceSessionId\":\"sbx_fpawWIC6AYpoUjxyPGeBlo4i6SOW\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":3033575832,\"expiresAt\":1789921318900,\"createdAt\":1787304136971,\"updatedAt\":1787304136971,\"lastUsedAt\":1787329318906,\"creationMethod\":\"automatic\",\"parentId\":\"snap_h0RKgA9da42J21Kvl1Wdtfq0osmA\"}}"
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
     },
     {
       "id": "snap_h0RKgA9da42J21Kvl1Wdtfq0osmA",
@@ -539,9 +539,9 @@
     {
       "id": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
       "sizeBytes": 1058635891,
-      "lastUsedAt": 1787601968237,
+      "lastUsedAt": 1787670202841,
       "createdAt": 1787168873398,
-      "expiresAt": 1790193968236,
+      "expiresAt": 1790262202840,
       "base": true
     },
     {
@@ -587,7 +587,7 @@
   ],
   "stage": "persistent-capacity-failed",
   "persistentCapacitySmoke": {
-    "name": "hrai-persistent-smoke-32837354924",
+    "name": "hrai-persistent-smoke-32891757693",
     "request": {
       "persistent": true,
       "snapshotExpiration": 3600000
@@ -597,7 +597,7 @@
     "createBody": "{\"error\":{\"code\":\"bad_request\",\"message\":\"`snapshotExpiration` must be 0 (no expiration) or >= 86400000 ms (1 day).\"}}",
     "deleteStatus": 404,
     "deleted": true,
-    "deleteBody": "{\"error\":{\"code\":\"not_found\",\"message\":\"Sandbox 'hrai-persistent-smoke-32837354924' not found for this project.\"}}"
+    "deleteBody": "{\"error\":{\"code\":\"not_found\",\"message\":\"Sandbox 'hrai-persistent-smoke-32891757693' not found for this project.\"}}"
   },
   "persistentSandboxCapacityOk": false
 }
