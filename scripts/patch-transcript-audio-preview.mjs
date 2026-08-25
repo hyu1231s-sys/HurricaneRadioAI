@@ -14,8 +14,8 @@ if(!index.includes(globalsOld)&&!index.includes('PREVIEW_AUDIO=null'))throw new 
 index=index.replace(globalsOld,globalsNew);
 
 const fileChangeOld="f.onchange=e=>{F=e.target.files[0];fn.textContent=F?F.name:'音声ファイルを選ぶ';done.style.display='none';review.style.display='none';R=false;ready()};";
-const fileChangeNew="f.onchange=e=>{F=e.target.files[0];fn.textContent=F?F.name:'音声ファイルを選ぶ';preparePreviewAudio();done.style.display='none';review.style.display='none';R=false;ready()};";
-if(!index.includes(fileChangeOld)&&!index.includes('preparePreviewAudio();done.style.display'))throw new Error('TRANSCRIPT_AUDIO_PREVIEW_FILE_TARGET_MISSING');
+const fileChangeNew="f.onchange=e=>{F=e.target.files[0];fn.textContent=F?F.name:'音声ファイルを選ぶ';preparePreviewAudio();done.style.display='none';if(R&&TR){renderRows();review.style.display='block'}else{review.style.display='none';R=false}ready()};";
+if(!index.includes(fileChangeOld)&&!index.includes("if(R&&TR){renderRows();review.style.display='block'}"))throw new Error('TRANSCRIPT_AUDIO_PREVIEW_FILE_TARGET_MISSING');
 index=index.replace(fileChangeOld,fileChangeNew);
 
 const clockMarker="function clock(v){let n=Math.max(0,Math.floor(Number(v)||0)),m=Math.floor(n/60),s=n%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}";
