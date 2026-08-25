@@ -1,0 +1,39 @@
+name: Inspect Audio Hooks
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/audio-hooks-inspect.yml']
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 24}
+      - name: Restore current production source
+        run: |
+          node scripts/restore-rc1421.mjs
+          node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
+      - name: Extract audio hooks
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const files=['api/app.js','worker/hrai-pipeline.mjs','index.html'];
+          const terms=/ED|ed-upload|ed-clear|ffmpeg|amix|volume=|adelay|aloop|stream_loop|audio|BGM|bgm/i;
+          let out='';
+          for(const f of files){const lines=fs.readFileSync(f,'utf8').split(/\n/);out+=`\n===== ${f} =====\n`;for(let i=0;i<lines.length;i++){if(terms.test(lines[i])){for(let j=Math.max(0,i-2);j<=Math.min(lines.length-1,i+3);j++)out+=`${j+1}: ${lines[j]}\n`;out+='---\n'}}}
+          fs.writeFileSync('AUDIO_HOOKS_INSPECT.txt',out);
+          NODE
+      - name: Save inspection
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git pull --rebase origin main || true
+          git add AUDIO_HOOKS_INSPECT.txt
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record current audio hooks'
+          git push
