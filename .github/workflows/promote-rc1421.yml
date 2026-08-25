@@ -7,6 +7,7 @@ on:
       - '.github/workflows/promote-rc1421.yml'
       - 'scripts/restore-rc1421.mjs'
       - 'scripts/patch-hobby-timeslice.mjs'
+      - 'scripts/patch-transcript-audio-preview.mjs'
 
 jobs:
   promote:
@@ -28,10 +29,12 @@ jobs:
         run: |
           node scripts/restore-rc1421.mjs
           node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
           node scripts/check-inline-js.mjs
+          node --check /tmp/hrai-inline-rc1421.js
           grep -F 'snapshotExpiration:24*60*60*1000' api/app.js
           grep -F 'keepLastSnapshots:{count:2' api/app.js
           grep -F 'await sb.stop()' api/app.js
@@ -44,6 +47,9 @@ jobs:
           grep -F 'const size=750000' index.html
           grep -F "api('/api/job-status',s,{},65000)" index.html
           grep -F '作業データは保持されています' index.html
+          grep -F "play.className='previewbtn'" index.html
+          grep -F 'async function playPreview' index.html
+          grep -F "play.textContent=F?'▶ 音声':'音声を再選択'" index.html
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
