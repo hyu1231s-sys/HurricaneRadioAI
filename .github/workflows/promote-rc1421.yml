@@ -8,6 +8,7 @@ on:
       - 'scripts/restore-rc1421.mjs'
       - 'scripts/patch-hobby-timeslice.mjs'
       - 'scripts/patch-transcript-audio-preview.mjs'
+      - 'scripts/patch-custom-op-talk-bgm.mjs'
 
 jobs:
   promote:
@@ -30,6 +31,7 @@ jobs:
           node scripts/restore-rc1421.mjs
           node scripts/patch-hobby-timeslice.mjs
           node scripts/patch-transcript-audio-preview.mjs
+          node scripts/patch-custom-op-talk-bgm.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
@@ -44,12 +46,25 @@ jobs:
           grep -F 'resumableUpload:true' api/app.js
           grep -F 'sandbox_payment_required' api/app.js
           grep -F 'jobPreserved:true' api/app.js
+          grep -F 'const OP_BGM=' api/app.js
+          grep -F 'const TALK_BGM=' api/app.js
+          grep -F "r==='op-bgm-upload-init'" api/app.js
+          grep -F "r==='talk-bgm-upload-init'" api/app.js
+          grep -F 'const OP_BGM=' worker/hrai-pipeline.mjs
+          grep -F 'const TALK_BGM=' worker/hrai-pipeline.mjs
+          grep -F 'hasOpBgm=fs.existsSync(OP_BGM)' worker/hrai-pipeline.mjs
+          grep -F 'hasTalkBgm=fs.existsSync(TALK_BGM)' worker/hrai-pipeline.mjs
+          grep -F "volume=0.20" worker/hrai-pipeline.mjs
           grep -F 'const size=750000' index.html
           grep -F "api('/api/job-status',s,{},65000)" index.html
           grep -F '作業データは保持されています' index.html
           grep -F "play.className='previewbtn'" index.html
           grep -F 'async function playPreview' index.html
           grep -F "play.textContent=F?'▶ 音声':'音声を再選択'" index.html
+          grep -F 'OP曲を選ぶ（任意）' index.html
+          grep -F '会話BGMを選ぶ（任意）' index.html
+          grep -F "uploadMusic(s,O,'op','OP曲')" index.html
+          grep -F "uploadMusic(s,B,'talk','会話BGM')" index.html
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
@@ -90,6 +105,13 @@ jobs:
           echo "$body" | grep -F '"ffmpeg":true'
           echo "$body" | grep -F '"japaneseFont":true'
           echo "$body" | grep -F '"resumable":true'
+      - name: Verify production UI has custom music controls
+        run: |
+          body="$(curl -fsS https://hurricane-radio-ai.vercel.app/)"
+          echo "$body" | grep -F 'OP曲を選ぶ（任意）'
+          echo "$body" | grep -F '会話BGMを選ぶ（任意）'
+          echo "$body" | grep -F "uploadMusic(s,O,'op','OP曲')"
+          echo "$body" | grep -F "uploadMusic(s,B,'talk','会話BGM')"
       - name: Verify production smoke remains owner protected
         run: |
           code="$(curl -sS -o /tmp/smoke.json -w '%{http_code}' https://hurricane-radio-ai.vercel.app/api/start-job-smoke)"
