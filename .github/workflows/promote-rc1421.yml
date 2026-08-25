@@ -8,7 +8,7 @@ on:
       - 'scripts/restore-rc1421.mjs'
       - 'scripts/patch-hobby-timeslice.mjs'
       - 'scripts/patch-transcript-audio-preview.mjs'
-      - 'scripts/patch-custom-op-talk-bgm.mjs'
+      - 'scripts/patch-custom-op-talk-bgm-v2.mjs'
 
 jobs:
   promote:
@@ -31,7 +31,7 @@ jobs:
           node scripts/restore-rc1421.mjs
           node scripts/patch-hobby-timeslice.mjs
           node scripts/patch-transcript-audio-preview.mjs
-          node scripts/patch-custom-op-talk-bgm.mjs
+          node scripts/patch-custom-op-talk-bgm-v2.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
