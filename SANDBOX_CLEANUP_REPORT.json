@@ -1,6 +1,6 @@
 {
-  "ok": true,
-  "generatedAt": "2026-08-24T19:33:03.663Z",
+  "ok": false,
+  "generatedAt": "2026-08-25T10:28:01.400Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -8,11 +8,39 @@
   },
   "listStatus": 200,
   "before": {
-    "count": 24,
-    "bytes": 37050551597,
-    "gib": 34.506
+    "count": 28,
+    "bytes": 42135479411,
+    "gib": 39.242
   },
   "candidates": [
+    {
+      "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
+      "sizeBytes": 1058470466,
+      "lastUsedAt": 1787601306755,
+      "createdAt": 1787601306756,
+      "expiresAt": 1790193306750
+    },
+    {
+      "id": "snap_k83TjtRXTPvJZyU3dAmDAx60Byh8",
+      "sizeBytes": 1058459744,
+      "lastUsedAt": 1787598662413,
+      "createdAt": 1787244742136,
+      "expiresAt": 1790190662407
+    },
+    {
+      "id": "snap_vbhHZqa8SrNhg9L2lSFFReAp9aws",
+      "sizeBytes": 3033576318,
+      "lastUsedAt": 1787331967464,
+      "createdAt": 1787331967465,
+      "expiresAt": 1789923967459
+    },
+    {
+      "id": "snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc",
+      "sizeBytes": 3033575832,
+      "lastUsedAt": 1787329318906,
+      "createdAt": 1787304136971,
+      "expiresAt": 1789921318900
+    },
     {
       "id": "snap_h0RKgA9da42J21Kvl1Wdtfq0osmA",
       "sizeBytes": 3033572982,
@@ -156,6 +184,34 @@
   ],
   "deletionAttempts": [
     {
+      "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
+      "httpStatus": 200,
+      "deleted": true,
+      "alreadyGone": false,
+      "body": "{\"snapshot\":{\"id\":\"snap_EAClThxINAz27LBAMqdDJphnTPAH\",\"sourceSessionId\":\"sbx_G2UL7toxvfc9GdqiLqLiWOu3oFco\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058470466,\"expiresAt\":1790193306750,\"createdAt\":1787601306756,\"updatedAt\":1787601306756,\"lastUsedAt\":1787601306755,\"creationMethod\":\"automatic\",\"parentId\":\"snap_k83TjtRXTPvJZyU3dAmDAx60Byh8\"}}"
+    },
+    {
+      "id": "snap_k83TjtRXTPvJZyU3dAmDAx60Byh8",
+      "httpStatus": 200,
+      "deleted": true,
+      "alreadyGone": false,
+      "body": "{\"snapshot\":{\"id\":\"snap_k83TjtRXTPvJZyU3dAmDAx60Byh8\",\"sourceSessionId\":\"sbx_mEgUqx4JvUk0ccKiv6JZqbZbv2RE\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":1058459744,\"expiresAt\":1790190662407,\"createdAt\":1787244742136,\"updatedAt\":1787244742136,\"lastUsedAt\":1787598662413,\"creationMethod\":\"automatic\",\"parentId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\"}}"
+    },
+    {
+      "id": "snap_vbhHZqa8SrNhg9L2lSFFReAp9aws",
+      "httpStatus": 200,
+      "deleted": true,
+      "alreadyGone": false,
+      "body": "{\"snapshot\":{\"id\":\"snap_vbhHZqa8SrNhg9L2lSFFReAp9aws\",\"sourceSessionId\":\"sbx_2VJBxdOpmQWydrQwPQyF4KqAljSE\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":3033576318,\"expiresAt\":1789923967459,\"createdAt\":1787331967465,\"updatedAt\":1787331967465,\"lastUsedAt\":1787331967464,\"creationMethod\":\"automatic\",\"parentId\":\"snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc\"}}"
+    },
+    {
+      "id": "snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc",
+      "httpStatus": 200,
+      "deleted": true,
+      "alreadyGone": false,
+      "body": "{\"snapshot\":{\"id\":\"snap_yjCpGNnyLSS8sL2q3jdjlc0njiIc\",\"sourceSessionId\":\"sbx_fpawWIC6AYpoUjxyPGeBlo4i6SOW\",\"region\":\"iad1\",\"regions\":[\"iad1\"],\"status\":\"deleted\",\"sizeBytes\":3033575832,\"expiresAt\":1789921318900,\"createdAt\":1787304136971,\"updatedAt\":1787304136971,\"lastUsedAt\":1787329318906,\"creationMethod\":\"automatic\",\"parentId\":\"snap_h0RKgA9da42J21Kvl1Wdtfq0osmA\"}}"
+    },
+    {
       "id": "snap_h0RKgA9da42J21Kvl1Wdtfq0osmA",
       "httpStatus": 400,
       "deleted": true,
@@ -297,13 +353,45 @@
     }
   ],
   "afterStatus": 200,
-  "deleted": 20,
+  "deleted": 24,
   "after": {
-    "count": 24,
-    "bytes": 37050551597,
-    "gib": 34.506
+    "count": 28,
+    "bytes": 42135479411,
+    "gib": 39.242
   },
   "remaining": [
+    {
+      "id": "snap_er1hnVACjkRyAR4fVsPEeNm5buZC",
+      "sizeBytes": 1764897608,
+      "lastUsedAt": 1787653593431,
+      "createdAt": 1787627322846,
+      "expiresAt": 1787739993431,
+      "base": false
+    },
+    {
+      "id": "snap_NgdAPd722Rt5nRieLdo9rkessjFt",
+      "sizeBytes": 1114925511,
+      "lastUsedAt": 1787624677734,
+      "createdAt": 1787604613498,
+      "expiresAt": 1787711077734,
+      "base": false
+    },
+    {
+      "id": "snap_vgP7tsYZguqQFwCSjfEAKr0J7JGA",
+      "sizeBytes": 1146634229,
+      "lastUsedAt": 1787603457510,
+      "createdAt": 1787603457511,
+      "expiresAt": 1787689857505,
+      "base": false
+    },
+    {
+      "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
+      "sizeBytes": 1058470466,
+      "lastUsedAt": 1787601306755,
+      "createdAt": 1787601306756,
+      "expiresAt": 1790193306750,
+      "base": false
+    },
     {
       "id": "snap_vbhHZqa8SrNhg9L2lSFFReAp9aws",
       "sizeBytes": 3033576318,
@@ -451,9 +539,9 @@
     {
       "id": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
       "sizeBytes": 1058635891,
-      "lastUsedAt": 1787599158307,
+      "lastUsedAt": 1787601968237,
       "createdAt": 1787168873398,
-      "expiresAt": 1790191158306,
+      "expiresAt": 1790193968236,
       "base": true
     },
     {
@@ -497,15 +585,19 @@
       "base": false
     }
   ],
-  "stage": "complete",
-  "capacitySmoke": {
-    "name": "hrai-capacity-smoke-32768792036",
-    "createStatus": 200,
-    "created": true,
-    "createBody": "{\"sandbox\":{\"name\":\"hrai-capacity-smoke-32768792036\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"status\":\"running\",\"statusUpdatedAt\":1787600026032,\"persistent\":false,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"cwd\":\"/vercel\",\"createdAt\":1787600026032,\"updatedAt\":1787600026032},\"session\":{\"id\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"runtime\":\"node22\",\"requestedAt\":1787600025754,\"startedAt\":1787600025899,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1787600025754,\"updatedAt\":1787600025945,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-capacity-smoke-32768792036\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
-    "deleteStatus": 200,
+  "stage": "persistent-capacity-failed",
+  "persistentCapacitySmoke": {
+    "name": "hrai-persistent-smoke-32837354924",
+    "request": {
+      "persistent": true,
+      "snapshotExpiration": 3600000
+    },
+    "createStatus": 400,
+    "created": false,
+    "createBody": "{\"error\":{\"code\":\"bad_request\",\"message\":\"`snapshotExpiration` must be 0 (no expiration) or >= 86400000 ms (1 day).\"}}",
+    "deleteStatus": 404,
     "deleted": true,
-    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-capacity-smoke-32768792036\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_r1Xd6xUKRzL4pkTPiXOJSYmTHuWM\",\"status\":\"running\",\"statusUpdatedAt\":1787600026032,\"persistent\":false,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"cwd\":\"/vercel\",\"createdAt\":1787600026032,\"updatedAt\":1787600026032}}"
+    "deleteBody": "{\"error\":{\"code\":\"not_found\",\"message\":\"Sandbox 'hrai-persistent-smoke-32837354924' not found for this project.\"}}"
   },
-  "newSandboxCapacityOk": true
+  "persistentSandboxCapacityOk": false
 }
