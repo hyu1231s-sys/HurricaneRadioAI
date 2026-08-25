@@ -75,7 +75,7 @@ jobs:
           })();
           NODE
 
-      - name: Capacity smoke create and remove temporary Sandbox
+      - name: Persistent capacity smoke like production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
@@ -87,7 +87,7 @@ jobs:
           const token=process.env.VERCEL_TOKEN||'';
           const team=process.env.TEAM_ID,project=process.env.PROJECT_ID,base=process.env.BASE_SNAPSHOT;
           const report=JSON.parse(fs.readFileSync('SANDBOX_CLEANUP_REPORT.json','utf8'));
-          const name=`hrai-capacity-smoke-${process.env.GITHUB_RUN_ID||Date.now()}`;
+          const name=`hrai-persistent-smoke-${process.env.GITHUB_RUN_ID||Date.now()}`;
           async function req(url,opts={}){
             const r=await fetch(url,{...opts,headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',...(opts.headers||{})}});
             const text=await r.text();
@@ -95,20 +95,21 @@ jobs:
             return {status:r.status,ok:r.ok,text,json};
           }
           (async()=>{
+            let created=false;
             try{
-              const create=await req(`https://api.vercel.com/v2/sandboxes?teamId=${encodeURIComponent(team)}`,{method:'POST',body:JSON.stringify({name,projectId:project,source:{type:'snapshot',snapshotId:base},ports:[],timeout:120000,resources:{vcpus:2},persistent:false})});
-              report.capacitySmoke={name,createStatus:create.status,created:create.ok,createBody:create.text.slice(0,1500)};
-              if(create.ok){
-                const del=await req(`https://api.vercel.com/v2/sandboxes/${encodeURIComponent(name)}?projectId=${encodeURIComponent(project)}&teamId=${encodeURIComponent(team)}`,{method:'DELETE'});
-                report.capacitySmoke.deleteStatus=del.status;
-                report.capacitySmoke.deleted=del.ok;
-                report.capacitySmoke.deleteBody=del.text.slice(0,800);
-              }
-              report.newSandboxCapacityOk=create.ok;
+              const body={name,projectId:project,source:{type:'snapshot',snapshotId:base},ports:[],timeout:120000,resources:{vcpus:2},persistent:true,snapshotExpiration:3600000,keepLastSnapshots:{count:1,expiration:3600000,deleteEvicted:true}};
+              const create=await req(`https://api.vercel.com/v2/sandboxes?teamId=${encodeURIComponent(team)}`,{method:'POST',body:JSON.stringify(body)});
+              created=create.ok;
+              report.persistentCapacitySmoke={name,request:{persistent:true,snapshotExpiration:3600000},createStatus:create.status,created:create.ok,createBody:create.text.slice(0,2000)};
+              report.persistentSandboxCapacityOk=create.ok;
               report.ok=Boolean(report.ok&&create.ok);
-              report.stage=create.ok?'complete':'capacity-smoke-failed';
-            }catch(e){report.capacitySmoke={created:false,error:String(e?.stack||e).slice(0,2000)};report.newSandboxCapacityOk=false;report.ok=false;report.stage='capacity-smoke-exception'}
-            finally{fs.writeFileSync('SANDBOX_CLEANUP_REPORT.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.capacitySmoke));}
+              report.stage=create.ok?'persistent-capacity-ok':'persistent-capacity-failed';
+            }catch(e){report.persistentCapacitySmoke={name,created:false,error:String(e?.stack||e).slice(0,2000)};report.persistentSandboxCapacityOk=false;report.ok=false;report.stage='persistent-capacity-exception'}
+            finally{
+              const del=await req(`https://api.vercel.com/v2/sandboxes/${encodeURIComponent(name)}?projectId=${encodeURIComponent(project)}&teamId=${encodeURIComponent(team)}`,{method:'DELETE'}).catch(()=>null);
+              if(report.persistentCapacitySmoke&&del){report.persistentCapacitySmoke.deleteStatus=del.status;report.persistentCapacitySmoke.deleted=del.ok||del.status===404;report.persistentCapacitySmoke.deleteBody=del.text.slice(0,800)}
+              fs.writeFileSync('SANDBOX_CLEANUP_REPORT.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report.persistentCapacitySmoke));
+            }
           })();
           NODE
 
@@ -124,4 +125,4 @@ jobs:
           git commit -m "Record Sandbox cleanup result"
           git push
 
-# cleanup-trigger: 2026-08-25T04:42+09:00
+# persistent-capacity-trigger: 2026-08-25T19:27+09:00
