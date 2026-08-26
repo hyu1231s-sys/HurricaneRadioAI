@@ -97,10 +97,11 @@ jobs:
           (async()=>{
             let created=false;
             try{
-              const body={name,projectId:project,source:{type:'snapshot',snapshotId:base},ports:[],timeout:120000,resources:{vcpus:2},persistent:true,snapshotExpiration:3600000,keepLastSnapshots:{count:1,expiration:3600000,deleteEvicted:true}};
+              const ttl=86400000;
+              const body={name,projectId:project,source:{type:'snapshot',snapshotId:base},ports:[],timeout:120000,resources:{vcpus:2},persistent:true,snapshotExpiration:ttl,keepLastSnapshots:{count:1,expiration:ttl,deleteEvicted:true}};
               const create=await req(`https://api.vercel.com/v2/sandboxes?teamId=${encodeURIComponent(team)}`,{method:'POST',body:JSON.stringify(body)});
               created=create.ok;
-              report.persistentCapacitySmoke={name,request:{persistent:true,snapshotExpiration:3600000},createStatus:create.status,created:create.ok,createBody:create.text.slice(0,2000)};
+              report.persistentCapacitySmoke={name,request:{persistent:true,snapshotExpiration:ttl},createStatus:create.status,created:create.ok,createBody:create.text.slice(0,2000)};
               report.persistentSandboxCapacityOk=create.ok;
               report.ok=Boolean(report.ok&&create.ok);
               report.stage=create.ok?'persistent-capacity-ok':'persistent-capacity-failed';
