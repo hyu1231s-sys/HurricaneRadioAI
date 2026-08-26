@@ -67,3 +67,5 @@ jobs:
         run: |
           curl -fsS https://hurricane-radio-ai.vercel.app/api/openai-status | grep -F '"reachable":true'
           curl -fsS https://hurricane-radio-ai.vercel.app/api/worker-status | grep -F '"ready":true'
+
+# retrigger: 2026-08-27T00:06+09:00
