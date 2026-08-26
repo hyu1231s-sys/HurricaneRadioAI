@@ -9,6 +9,7 @@ on:
       - 'scripts/patch-hobby-timeslice.mjs'
       - 'scripts/patch-transcript-audio-preview.mjs'
       - 'scripts/patch-custom-op-talk-bgm-v2.mjs'
+      - 'scripts/patch-expired-job-recovery.mjs'
 
 jobs:
   promote:
@@ -32,6 +33,7 @@ jobs:
           node scripts/patch-hobby-timeslice.mjs
           node scripts/patch-transcript-audio-preview.mjs
           node scripts/patch-custom-op-talk-bgm-v2.mjs
+          node scripts/patch-expired-job-recovery.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
@@ -65,6 +67,8 @@ jobs:
           grep -F '会話BGMを選ぶ（任意）' index.html
           grep -F "uploadMusic(s,O,'op','OP曲')" index.html
           grep -F "uploadMusic(s,B,'talk','会話BGM')" index.html
+          grep -F 'function expiredJobError' index.html
+          grep -F '前回の作業データは保存期限を過ぎています' index.html
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
@@ -76,7 +80,7 @@ jobs:
           node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));delete p.scripts;fs.writeFileSync('/tmp/rc1421-production/package.json',JSON.stringify(p,null,2)+'\n')"
           printf '%s\n' '{"orgId":"team_T7MRylRvLd04qtfhPCn52Rgi","projectId":"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu","projectName":"hurricane-radio-ai"}' > /tmp/rc1421-production/.vercel/project.json
           grep -F '4.4.21-rc14.21-longform-eta' /tmp/rc1421-production/api/app.js
-      - name: Deploy RC14.21 Hobby Longform to Production
+      - name: Deploy RC14.21 to Production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
@@ -105,13 +109,15 @@ jobs:
           echo "$body" | grep -F '"ffmpeg":true'
           echo "$body" | grep -F '"japaneseFont":true'
           echo "$body" | grep -F '"resumable":true'
-      - name: Verify production UI has custom music controls
+      - name: Verify production UI has recovery and music controls
         run: |
           body="$(curl -fsS https://hurricane-radio-ai.vercel.app/)"
           echo "$body" | grep -F 'OP曲を選ぶ（任意）'
           echo "$body" | grep -F '会話BGMを選ぶ（任意）'
           echo "$body" | grep -F "uploadMusic(s,O,'op','OP曲')"
           echo "$body" | grep -F "uploadMusic(s,B,'talk','会話BGM')"
+          echo "$body" | grep -F 'function expiredJobError'
+          echo "$body" | grep -F '前回の作業データは保存期限を過ぎています'
       - name: Verify production smoke remains owner protected
         run: |
           code="$(curl -sS -o /tmp/smoke.json -w '%{http_code}' https://hurricane-radio-ai.vercel.app/api/start-job-smoke)"
