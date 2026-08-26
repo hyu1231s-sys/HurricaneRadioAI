@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -68,4 +68,4 @@ jobs:
           curl -fsS https://hurricane-radio-ai.vercel.app/api/openai-status | grep -F '"reachable":true'
           curl -fsS https://hurricane-radio-ai.vercel.app/api/worker-status | grep -F '"ready":true'
 
-# retrigger: 2026-08-27T00:06+09:00
+# runner-bypass: 2026-08-27T02:17+09:00
