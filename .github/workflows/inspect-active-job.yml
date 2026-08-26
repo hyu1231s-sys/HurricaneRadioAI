@@ -1,0 +1,26 @@
+name: Inspect Active Job Sandbox
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/inspect-active-job.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect preserved sandbox
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          TEAM_ID: team_T7MRylRvLd04qtfhPCn52Rgi
+          PROJECT_ID: prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu
+          SANDBOX_NAME: hrai-d0655b166b9f36eb91eb34ea
+        run: |
+          node <<'NODE'
+          const token=process.env.VERCEL_TOKEN,team=process.env.TEAM_ID,project=process.env.PROJECT_ID,name=process.env.SANDBOX_NAME;
+          async function req(url){const r=await fetch(url,{headers:{Authorization:`Bearer ${token}`}});const text=await r.text();console.log('GET',r.status,text.slice(0,12000));}
+          (async()=>{
+            await req(`https://api.vercel.com/v2/sandboxes/${encodeURIComponent(name)}?projectId=${encodeURIComponent(project)}&teamId=${encodeURIComponent(team)}`);
+          })().catch(e=>{console.error(e);process.exit(2)});
+          NODE
