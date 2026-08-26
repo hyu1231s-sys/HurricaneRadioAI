@@ -1,0 +1,69 @@
+name: Deploy Expired Job Recovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-expired-job-recovery.yml'
+      - 'scripts/patch-expired-job-recovery.mjs'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Reconstruct exact RC14.21 with all hotfixes
+        run: |
+          node scripts/restore-rc1421.mjs
+          node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
+          node scripts/patch-custom-op-talk-bgm-v2.mjs
+          node scripts/patch-expired-job-recovery.mjs
+          node --check api/app.js
+          node --check worker/hrai-pipeline.mjs
+          node --check worker/worker-server.mjs
+          node scripts/check-inline-js.mjs
+          node --check /tmp/hrai-inline-rc1421.js
+          grep -F '4.4.21-rc14.21-longform-eta' api/app.js
+          grep -F 'function expiredJobError' index.html
+          grep -F 'Status code 410' index.html
+          grep -F '前回の作業データは保存期限を過ぎています' index.html
+          grep -F 'snapshotExpiration:24*60*60*1000' api/app.js
+          grep -F 'OP曲を選ぶ（任意）' index.html
+          grep -F '会話BGMを選ぶ（任意）' index.html
+      - name: Package deploy-ready source
+        run: |
+          rm -rf /tmp/rc1421-production
+          mkdir -p /tmp/rc1421-production/api /tmp/rc1421-production/worker /tmp/rc1421-production/assets/guest-presets /tmp/rc1421-production/.vercel
+          cp index.html vercel.json /tmp/rc1421-production/
+          cp api/app.js /tmp/rc1421-production/api/
+          cp worker/hrai-pipeline.mjs worker/worker-server.mjs worker/op-ui-template.webp worker/ed-ui-template.webp /tmp/rc1421-production/worker/
+          cp assets/guest-presets/*.webp /tmp/rc1421-production/assets/guest-presets/
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));delete p.scripts;fs.writeFileSync('/tmp/rc1421-production/package.json',JSON.stringify(p,null,2)+'\n')"
+          printf '%s\n' '{"orgId":"team_T7MRylRvLd04qtfhPCn52Rgi","projectId":"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu","projectName":"hurricane-radio-ai"}' > /tmp/rc1421-production/.vercel/project.json
+      - name: Deploy production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          test -n "$VERCEL_TOKEN"
+          npx --yes vercel@59.3.0 deploy --prod --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --cwd /tmp/rc1421-production
+      - name: Verify production
+        run: |
+          for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            health="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/health || true)"
+            ui="$(curl -fsS https://hurricane-radio-ai.vercel.app/ || true)"
+            if echo "$health" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq 'function expiredJobError' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています'; then
+              echo "$health"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo '::error::expired job recovery is not live'
+          exit 1
+      - name: Verify services
+        run: |
+          curl -fsS https://hurricane-radio-ai.vercel.app/api/openai-status | grep -F '"reachable":true'
+          curl -fsS https://hurricane-radio-ai.vercel.app/api/worker-status | grep -F '"ready":true'
