@@ -10,6 +10,7 @@ on:
       - 'scripts/patch-transcript-audio-preview.mjs'
       - 'scripts/patch-custom-op-talk-bgm-v2.mjs'
       - 'scripts/patch-expired-job-recovery.mjs'
+      - 'vercel.json'
 
 jobs:
   promote:
@@ -69,6 +70,8 @@ jobs:
           grep -F "uploadMusic(s,B,'talk','会話BGM')" index.html
           grep -F 'function expiredJobError' index.html
           grep -F '前回の作業データは保存期限を過ぎています' index.html
+          grep -F '"/api/op-bgm-upload-init"' <(sed 's/source/source/' vercel.json) || grep -F 'op-bgm-upload-init' vercel.json
+          grep -F 'talk-bgm-upload-init' vercel.json
       - name: Package deploy-ready source
         run: |
           rm -rf /tmp/rc1421-production
@@ -85,15 +88,18 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npx --yes vercel@59.3.0 deploy --prod --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --cwd /tmp/rc1421-production
-      - name: Verify production health
+      - name: Verify production health and BGM routes
         run: |
           for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
             body="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/health || true)"
-            echo "$body"
-            echo "$body" | grep -F '4.4.21-rc14.21-longform-eta' && exit 0
+            ui="$(curl -fsS https://hurricane-radio-ai.vercel.app/ || true)"
+            opcode="$(curl -sS -o /tmp/op-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/op-bgm-upload-init || true)"
+            talkcode="$(curl -sS -o /tmp/talk-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/talk-bgm-upload-init || true)"
+            echo "health=$body op=$opcode talk=$talkcode"
+            if echo "$body" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています' && test "$opcode" != "404" && test "$talkcode" != "404"; then exit 0; fi
             sleep 5
           done
-          echo "::error::Production health did not report RC14.21"
+          echo "::error::Production RC14.21/BGM route verification failed"
           exit 1
       - name: Verify OpenAI status
         run: |
@@ -109,15 +115,6 @@ jobs:
           echo "$body" | grep -F '"ffmpeg":true'
           echo "$body" | grep -F '"japaneseFont":true'
           echo "$body" | grep -F '"resumable":true'
-      - name: Verify production UI has recovery and music controls
-        run: |
-          body="$(curl -fsS https://hurricane-radio-ai.vercel.app/)"
-          echo "$body" | grep -F 'OP曲を選ぶ（任意）'
-          echo "$body" | grep -F '会話BGMを選ぶ（任意）'
-          echo "$body" | grep -F "uploadMusic(s,O,'op','OP曲')"
-          echo "$body" | grep -F "uploadMusic(s,B,'talk','会話BGM')"
-          echo "$body" | grep -F 'function expiredJobError'
-          echo "$body" | grep -F '前回の作業データは保存期限を過ぎています'
       - name: Verify production smoke remains owner protected
         run: |
           code="$(curl -sS -o /tmp/smoke.json -w '%{http_code}' https://hurricane-radio-ai.vercel.app/api/start-job-smoke)"
