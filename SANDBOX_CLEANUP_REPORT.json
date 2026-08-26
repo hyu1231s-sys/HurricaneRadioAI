@@ -1,6 +1,6 @@
 {
-  "ok": false,
-  "generatedAt": "2026-08-25T19:49:38.891Z",
+  "ok": true,
+  "generatedAt": "2026-08-26T13:27:21.326Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -585,19 +585,19 @@
       "base": false
     }
   ],
-  "stage": "persistent-capacity-failed",
+  "stage": "persistent-capacity-ok",
   "persistentCapacitySmoke": {
-    "name": "hrai-persistent-smoke-32891757693",
+    "name": "hrai-persistent-smoke-32974287158",
     "request": {
       "persistent": true,
-      "snapshotExpiration": 3600000
+      "snapshotExpiration": 86400000
     },
-    "createStatus": 400,
-    "created": false,
-    "createBody": "{\"error\":{\"code\":\"bad_request\",\"message\":\"`snapshotExpiration` must be 0 (no expiration) or >= 86400000 ms (1 day).\"}}",
-    "deleteStatus": 404,
+    "createStatus": 200,
+    "created": true,
+    "createBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-32974287158\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"status\":\"running\",\"statusUpdatedAt\":1787750845618,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787750845618,\"updatedAt\":1787750845618},\"session\":{\"id\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"runtime\":\"node22\",\"requestedAt\":1787750845543,\"startedAt\":1787750845578,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1787750845543,\"updatedAt\":1787750845587,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-persistent-smoke-32974287158\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
+    "deleteStatus": 200,
     "deleted": true,
-    "deleteBody": "{\"error\":{\"code\":\"not_found\",\"message\":\"Sandbox 'hrai-persistent-smoke-32891757693' not found for this project.\"}}"
+    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-32974287158\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"status\":\"running\",\"statusUpdatedAt\":1787750845618,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787750845618,\"updatedAt\":1787750845618}}"
   },
-  "persistentSandboxCapacityOk": false
+  "persistentSandboxCapacityOk": true
 }
