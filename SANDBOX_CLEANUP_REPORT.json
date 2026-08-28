@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-08-26T13:27:21.326Z",
+  "generatedAt": "2026-08-28T01:47:04.950Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -8,11 +8,60 @@
   },
   "listStatus": 200,
   "before": {
-    "count": 28,
-    "bytes": 42135479411,
-    "gib": 39.242
+    "count": 35,
+    "bytes": 55035568396,
+    "gib": 51.256
   },
   "candidates": [
+    {
+      "id": "snap_Ag4kusdjN0ePKbQuj7jEgP3uVrcW",
+      "sizeBytes": 1443890258,
+      "lastUsedAt": 1787783442570,
+      "createdAt": 1787783442419,
+      "expiresAt": 1787869842570
+    },
+    {
+      "id": "snap_D6KHiJIPlPtgBOrA8gdwocS1ePWx",
+      "sizeBytes": 1443888034,
+      "lastUsedAt": 1787780797679,
+      "createdAt": 1787780797222,
+      "expiresAt": 1787867197679
+    },
+    {
+      "id": "snap_tZg4RAJz9fF7IY4bld3mqmTx4O77",
+      "sizeBytes": 1263826194,
+      "lastUsedAt": 1787778152557,
+      "createdAt": 1787778152380,
+      "expiresAt": 1787864552557
+    },
+    {
+      "id": "snap_4BqtPNJrUnQHCU5LWhXLc0Fff6q3",
+      "sizeBytes": 1162613262,
+      "lastUsedAt": 1787775507147,
+      "createdAt": 1787775506244,
+      "expiresAt": 1787861907147
+    },
+    {
+      "id": "snap_er1hnVACjkRyAR4fVsPEeNm5buZC",
+      "sizeBytes": 1764897608,
+      "lastUsedAt": 1787653593431,
+      "createdAt": 1787627322846,
+      "expiresAt": 1787739993431
+    },
+    {
+      "id": "snap_NgdAPd722Rt5nRieLdo9rkessjFt",
+      "sizeBytes": 1114925511,
+      "lastUsedAt": 1787624677734,
+      "createdAt": 1787604613498,
+      "expiresAt": 1787711077734
+    },
+    {
+      "id": "snap_vgP7tsYZguqQFwCSjfEAKr0J7JGA",
+      "sizeBytes": 1146634229,
+      "lastUsedAt": 1787603457510,
+      "createdAt": 1787603457511,
+      "expiresAt": 1787689857505
+    },
     {
       "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
       "sizeBytes": 1058470466,
@@ -184,6 +233,55 @@
   ],
   "deletionAttempts": [
     {
+      "id": "snap_Ag4kusdjN0ePKbQuj7jEgP3uVrcW",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_D6KHiJIPlPtgBOrA8gdwocS1ePWx",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_tZg4RAJz9fF7IY4bld3mqmTx4O77",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_4BqtPNJrUnQHCU5LWhXLc0Fff6q3",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_er1hnVACjkRyAR4fVsPEeNm5buZC",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_NgdAPd722Rt5nRieLdo9rkessjFt",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
+      "id": "snap_vgP7tsYZguqQFwCSjfEAKr0J7JGA",
+      "httpStatus": 400,
+      "deleted": true,
+      "alreadyGone": true,
+      "body": "{\"error\":{\"code\":\"bad_request\",\"message\":\"Snapshot expired or deleted.\"}}"
+    },
+    {
       "id": "snap_EAClThxINAz27LBAMqdDJphnTPAH",
       "httpStatus": 400,
       "deleted": true,
@@ -353,13 +451,69 @@
     }
   ],
   "afterStatus": 200,
-  "deleted": 24,
+  "deleted": 31,
   "after": {
-    "count": 28,
-    "bytes": 42135479411,
-    "gib": 39.242
+    "count": 35,
+    "bytes": 55035568396,
+    "gib": 51.256
   },
   "remaining": [
+    {
+      "id": "snap_MiSUKp7Np8LkeUQxPy5ky3HqlU9a",
+      "sizeBytes": 3070898029,
+      "lastUsedAt": 1787791381275,
+      "createdAt": 1787791381276,
+      "expiresAt": 1787877781270,
+      "base": false
+    },
+    {
+      "id": "snap_qc10D2Gp0lzETeeSPjHEyphfRjUw",
+      "sizeBytes": 3071081788,
+      "lastUsedAt": 1787788735034,
+      "createdAt": 1787788734219,
+      "expiresAt": 1787875135034,
+      "base": false
+    },
+    {
+      "id": "snap_E619zlZj3wYwHAmz4Ifd8BwAqox2",
+      "sizeBytes": 1443891420,
+      "lastUsedAt": 1787786087968,
+      "createdAt": 1787786087298,
+      "expiresAt": 1787872487968,
+      "base": false
+    },
+    {
+      "id": "snap_Ag4kusdjN0ePKbQuj7jEgP3uVrcW",
+      "sizeBytes": 1443890258,
+      "lastUsedAt": 1787783442570,
+      "createdAt": 1787783442419,
+      "expiresAt": 1787869842570,
+      "base": false
+    },
+    {
+      "id": "snap_D6KHiJIPlPtgBOrA8gdwocS1ePWx",
+      "sizeBytes": 1443888034,
+      "lastUsedAt": 1787780797679,
+      "createdAt": 1787780797222,
+      "expiresAt": 1787867197679,
+      "base": false
+    },
+    {
+      "id": "snap_tZg4RAJz9fF7IY4bld3mqmTx4O77",
+      "sizeBytes": 1263826194,
+      "lastUsedAt": 1787778152557,
+      "createdAt": 1787778152380,
+      "expiresAt": 1787864552557,
+      "base": false
+    },
+    {
+      "id": "snap_4BqtPNJrUnQHCU5LWhXLc0Fff6q3",
+      "sizeBytes": 1162613262,
+      "lastUsedAt": 1787775507147,
+      "createdAt": 1787775506244,
+      "expiresAt": 1787861907147,
+      "base": false
+    },
     {
       "id": "snap_er1hnVACjkRyAR4fVsPEeNm5buZC",
       "sizeBytes": 1764897608,
@@ -539,9 +693,9 @@
     {
       "id": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
       "sizeBytes": 1058635891,
-      "lastUsedAt": 1787670202841,
+      "lastUsedAt": 1787772861978,
       "createdAt": 1787168873398,
-      "expiresAt": 1790262202840,
+      "expiresAt": 1790364861977,
       "base": true
     },
     {
@@ -587,17 +741,17 @@
   ],
   "stage": "persistent-capacity-ok",
   "persistentCapacitySmoke": {
-    "name": "hrai-persistent-smoke-32974287158",
+    "name": "hrai-persistent-smoke-33133906418",
     "request": {
       "persistent": true,
       "snapshotExpiration": 86400000
     },
     "createStatus": 200,
     "created": true,
-    "createBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-32974287158\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"status\":\"running\",\"statusUpdatedAt\":1787750845618,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787750845618,\"updatedAt\":1787750845618},\"session\":{\"id\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"runtime\":\"node22\",\"requestedAt\":1787750845543,\"startedAt\":1787750845578,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1787750845543,\"updatedAt\":1787750845587,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-persistent-smoke-32974287158\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
+    "createBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-33133906418\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_mQWhAvex6ppBHWVYZMKrW86JtfSn\",\"status\":\"running\",\"statusUpdatedAt\":1787881635061,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787881635062,\"updatedAt\":1787881635062},\"session\":{\"id\":\"sbx_mQWhAvex6ppBHWVYZMKrW86JtfSn\",\"runtime\":\"node22\",\"requestedAt\":1787881634987,\"startedAt\":1787881635024,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1787881634987,\"updatedAt\":1787881635034,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-persistent-smoke-33133906418\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
     "deleteStatus": 200,
     "deleted": true,
-    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-32974287158\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_O70faRHcENJ1hIq7YEgjMqdKweGQ\",\"status\":\"running\",\"statusUpdatedAt\":1787750845618,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787750845618,\"updatedAt\":1787750845618}}"
+    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-33133906418\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_mQWhAvex6ppBHWVYZMKrW86JtfSn\",\"status\":\"running\",\"statusUpdatedAt\":1787881635061,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1787881635062,\"updatedAt\":1787881635062}}"
   },
   "persistentSandboxCapacityOk": true
 }
