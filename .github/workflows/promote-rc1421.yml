@@ -11,6 +11,7 @@ on:
       - 'scripts/patch-custom-op-talk-bgm-v2.mjs'
       - 'scripts/patch-expired-job-recovery.mjs'
       - 'scripts/patch-avatar-bustup.mjs'
+      - 'scripts/patch-large-conversation-captions.mjs'
       - 'vercel.json'
 
 jobs:
@@ -37,6 +38,7 @@ jobs:
           node scripts/patch-custom-op-talk-bgm-v2.mjs
           node scripts/patch-expired-job-recovery.mjs
           node scripts/patch-avatar-bustup.mjs
+          node scripts/patch-large-conversation-captions.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
@@ -60,6 +62,9 @@ jobs:
           grep -F 'hasOpBgm=fs.existsSync(OP_BGM)' worker/hrai-pipeline.mjs
           grep -F 'hasTalkBgm=fs.existsSync(TALK_BGM)' worker/hrai-pipeline.mjs
           grep -F "volume=0.20" worker/hrai-pipeline.mjs
+          grep -F 'Style: Caption,Noto Sans Mono CJK JP,38' worker/hrai-pipeline.mjs
+          grep -F 'Style: Speaker,Noto Sans Mono CJK JP,21' worker/hrai-pipeline.mjs
+          grep -F 'pos(250,638)' worker/hrai-pipeline.mjs
           grep -F 'const size=750000' index.html
           grep -F "api('/api/job-status',s,{},65000)" index.html
           grep -F '作業データは保持されています' index.html
