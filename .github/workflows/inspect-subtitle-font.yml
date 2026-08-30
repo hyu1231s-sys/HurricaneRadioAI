@@ -1,0 +1,25 @@
+name: Inspect Subtitle Font
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-subtitle-font.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Reconstruct current RC14.21
+        run: |
+          node scripts/restore-rc1421.mjs
+          node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
+          node scripts/patch-custom-op-talk-bgm-v2.mjs
+          node scripts/patch-expired-job-recovery.mjs
+      - name: Inspect subtitle drawing
+        run: |
+          grep -nE 'fontsize|drawtext|subtitle|caption|speaker' worker/hrai-pipeline.mjs | head -160
