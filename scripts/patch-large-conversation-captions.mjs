@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+const p='worker/hrai-pipeline.mjs';
+let s=fs.readFileSync(p,'utf8');
+const rep=(a,b,label)=>{if(s.includes(b))return;if(!s.includes(a))throw new Error(label);s=s.replace(a,b)};
+rep("Style: Caption,Noto Sans Mono CJK JP,29,&H00F2FFF8,&H00F2FFF8,&H00081410,&H00000000,-1,0,0,0,100,100,1.0,0,1,1.55,0.35,4,0,0,0,1","Style: Caption,Noto Sans Mono CJK JP,38,&H00F2FFF8,&H00F2FFF8,&H00081410,&H00000000,-1,0,0,0,100,100,1.0,0,1,1.85,0.45,4,0,0,0,1",'CAPTION_STYLE_TARGET_MISSING');
+rep("Style: Speaker,Noto Sans Mono CJK JP,18,&H00B0F369,&H00B0F369,&H00030A14,&H00000000,-1,0,0,0,100,100,1.5,0,1,1.30,0.35,4,0,0,0,1","Style: Speaker,Noto Sans Mono CJK JP,21,&H00B0F369,&H00B0F369,&H00030A14,&H00000000,-1,0,0,0,100,100,1.5,0,1,1.45,0.40,4,0,0,0,1",'SPEAKER_STYLE_TARGET_MISSING');
+rep("{\\\\an4\\\\pos(250,647)}${assText(cue.text,22)}","{\\\\an4\\\\pos(250,638)}${assText(cue.text,22)}",'CAPTION_POSITION_TARGET_MISSING');
+rep("{\\\\an4\\\\pos(88,647)\\\\c${spColor}\\\\bord1.4\\\\shad0.35}${assText(displaySpeaker(x.speaker,cast),12)}","{\\\\an4\\\\pos(88,638)\\\\c${spColor}\\\\bord1.5\\\\shad0.40}${assText(displaySpeaker(x.speaker,cast),12)}",'SPEAKER_POSITION_TARGET_MISSING');
+fs.writeFileSync(p,s);
+console.log('applied larger conversation captions: 29->38, speaker 18->21, raised baseline');
