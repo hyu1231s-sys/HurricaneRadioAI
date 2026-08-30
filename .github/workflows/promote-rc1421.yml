@@ -10,6 +10,7 @@ on:
       - 'scripts/patch-transcript-audio-preview.mjs'
       - 'scripts/patch-custom-op-talk-bgm-v2.mjs'
       - 'scripts/patch-expired-job-recovery.mjs'
+      - 'scripts/patch-avatar-bustup.mjs'
       - 'vercel.json'
 
 jobs:
@@ -35,6 +36,7 @@ jobs:
           node scripts/patch-transcript-audio-preview.mjs
           node scripts/patch-custom-op-talk-bgm-v2.mjs
           node scripts/patch-expired-job-recovery.mjs
+          node scripts/patch-avatar-bustup.mjs
           node --check api/app.js
           node --check worker/hrai-pipeline.mjs
           node --check worker/worker-server.mjs
@@ -70,7 +72,11 @@ jobs:
           grep -F "uploadMusic(s,B,'talk','会話BGM')" index.html
           grep -F 'function expiredJobError' index.html
           grep -F '前回の作業データは保存期限を過ぎています' index.html
-          grep -F '"/api/op-bgm-upload-init"' <(sed 's/source/source/' vercel.json) || grep -F 'op-bgm-upload-init' vercel.json
+          grep -F 'AVATAR_BUSTUP_V1' index.html
+          grep -F 'prepareAvatarFile' index.html
+          grep -F 'アバター表示を調整' index.html
+          grep -F '複数人を検出しました' index.html
+          grep -F 'op-bgm-upload-init' vercel.json
           grep -F 'talk-bgm-upload-init' vercel.json
       - name: Package deploy-ready source
         run: |
@@ -88,7 +94,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npx --yes vercel@59.3.0 deploy --prod --yes --token "$VERCEL_TOKEN" --scope hyu1231s-2033s-projects --cwd /tmp/rc1421-production
-      - name: Verify production health and BGM routes
+      - name: Verify production health, BGM routes, and avatar crop UI
         run: |
           for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
             body="$(curl -fsS https://hurricane-radio-ai.vercel.app/api/health || true)"
@@ -96,10 +102,10 @@ jobs:
             opcode="$(curl -sS -o /tmp/op-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/op-bgm-upload-init || true)"
             talkcode="$(curl -sS -o /tmp/talk-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/talk-bgm-upload-init || true)"
             echo "health=$body op=$opcode talk=$talkcode"
-            if echo "$body" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています' && test "$opcode" != "404" && test "$talkcode" != "404"; then exit 0; fi
+            if echo "$body" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています' && echo "$ui" | grep -Fq 'AVATAR_BUSTUP_V1' && echo "$ui" | grep -Fq 'アバター表示を調整' && test "$opcode" != "404" && test "$talkcode" != "404"; then exit 0; fi
             sleep 5
           done
-          echo "::error::Production RC14.21/BGM route verification failed"
+          echo "::error::Production RC14.21/avatar crop verification failed"
           exit 1
       - name: Verify OpenAI status
         run: |
