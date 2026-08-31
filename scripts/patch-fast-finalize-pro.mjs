@@ -1,0 +1,19 @@
+import fs from 'node:fs';
+const p='worker/hrai-pipeline.mjs';
+let s=fs.readFileSync(p,'utf8');
+const rep=(a,b,label)=>{if(s.includes(b))return;if(!s.includes(a))throw new Error(label);s=s.replace(a,b)};
+
+rep("const SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||25*60*1000));","const SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||38*60*1000));",'FAST_SESSION_SLICE_TARGET_MISSING');
+rep("function renderBlockWidth(d){const forced=Number(process.env.HRAI_RENDER_BLOCK_SECONDS||0);if(forced>=8&&forced<=360)return forced;return d>=2700?60:d>=1200?90:d>=600?180:360}","function renderBlockWidth(d){const forced=Number(process.env.HRAI_RENDER_BLOCK_SECONDS||0);if(forced>=8&&forced<=360)return forced;return d>=2700?120:d>=1200?180:d>=600?240:360}",'FAST_RENDER_BLOCK_TARGET_MISSING');
+rep("const sample=Math.min(180,Math.max(10,dur-5))","const sample=Math.min(45,Math.max(10,dur-5))",'FAST_QA_SAMPLE_TARGET_MISSING');
+
+const oldConcat="const finalTmp=`${BASE}/HurricaneRadioAI.partial.mp4`;await fsp.rm(finalTmp,{force:true});await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c:v','copy','-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-af','aresample=async=1:first_pts=0','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],900000);";
+const newConcat="const finalTmp=`${BASE}/HurricaneRadioAI.partial.mp4`;await fsp.rm(finalTmp,{force:true});try{await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c','copy','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],300000);if(!(await validVideo(finalTmp,expected,100000)))throw new Error('FAST_CONCAT_COPY_VALIDATION_FAILED')}catch(e){await fsp.rm(finalTmp,{force:true});await status({stage:'finalizing',phase:'高速結合を互換モードで仕上げ中',progress:95,fastConcatFallback:true});await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c:v','copy','-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-af','aresample=async=1:first_pts=0','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],900000)}";
+rep(oldConcat,newConcat,'FAST_CONCAT_TARGET_MISSING');
+
+const oldPost="await commitVideo(finalTmp,FINAL,expected);if(edDuration>0){const sourceTail=await tailMaxVolume(ED),finalTail=await tailMaxVolume(FINAL);if(sourceTail>-45&&finalTail<-55)throw new Error(`FINAL_ED_AUDIO_MISSING: source=${sourceTail}dB final=${finalTail}dB`)}const stat=await fsp.stat(FINAL),vd=await duration(FINAL),qa=await finalQA(FINAL,expected,tr,captionCueCount),thumbnails=await renderThumbnails(thumbTitleFile,thumbThemeFile,thumbShortFile,d,opDuration),exports=await renderExports(tr,cast,metadata,vd,opDuration),freedRenderBytes=await pruneCompletedRenderParts();";
+const newPost="await commitVideo(finalTmp,FINAL,expected);if(edDuration>0){const sourceTail=await tailMaxVolume(ED),finalTail=await tailMaxVolume(FINAL);if(sourceTail>-45&&finalTail<-55)throw new Error(`FINAL_ED_AUDIO_MISSING: source=${sourceTail}dB final=${finalTail}dB`)}const stat=await fsp.stat(FINAL),vd=await duration(FINAL),qa=await finalQA(FINAL,expected,tr,captionCueCount);await status({stage:'video_complete',phase:'MP4完成・投稿データを仕上げ中',progress:98,artifact:{name:'HurricaneRadioAI.mp4',bytes:stat.size,duration:vd,url:'/artifact'},qa,renderEtaSeconds:0,fastFinalize:true});const [thumbnails,exports]=await Promise.all([renderThumbnails(thumbTitleFile,thumbThemeFile,thumbShortFile,d,opDuration),renderExports(tr,cast,metadata,vd,opDuration)]),freedRenderBytes=await pruneCompletedRenderParts();";
+rep(oldPost,newPost,'FAST_POST_FINALIZE_TARGET_MISSING');
+
+fs.writeFileSync(p,s);
+console.log('applied Pro-oriented render speedup: 38m slices, larger blocks, stream-copy concat fallback, shorter QA, parallel post-processing');
