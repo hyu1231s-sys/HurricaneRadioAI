@@ -77,9 +77,12 @@ jobs:
           grep -F "uploadMusic(s,B,'talk','会話BGM')" index.html
           grep -F 'function expiredJobError' index.html
           grep -F '前回の作業データは保存期限を過ぎています' index.html
-          grep -F 'AVATAR_BUSTUP_V1' index.html
+          grep -F 'AVATAR_BUSTUP_V2' index.html
           grep -F 'prepareAvatarFile' index.html
-          grep -F 'アバター表示を調整' index.html
+          grep -F '自動バストアップ' index.html
+          grep -F '手動で調整' index.html
+          grep -F 'min="-100" max="100"' index.html
+          grep -F '縦長写真モード' index.html
           grep -F '複数人を検出しました' index.html
           grep -F 'op-bgm-upload-init' vercel.json
           grep -F 'talk-bgm-upload-init' vercel.json
@@ -107,7 +110,7 @@ jobs:
             opcode="$(curl -sS -o /tmp/op-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/op-bgm-upload-init || true)"
             talkcode="$(curl -sS -o /tmp/talk-route.json -w '%{http_code}' -X POST -H 'content-type: application/json' --data '{}' https://hurricane-radio-ai.vercel.app/api/talk-bgm-upload-init || true)"
             echo "health=$body op=$opcode talk=$talkcode"
-            if echo "$body" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています' && echo "$ui" | grep -Fq 'AVATAR_BUSTUP_V1' && echo "$ui" | grep -Fq 'アバター表示を調整' && test "$opcode" != "404" && test "$talkcode" != "404"; then exit 0; fi
+            if echo "$body" | grep -Fq '4.4.21-rc14.21-longform-eta' && echo "$ui" | grep -Fq '前回の作業データは保存期限を過ぎています' && echo "$ui" | grep -Fq 'AVATAR_BUSTUP_V2' && echo "$ui" | grep -Fq '手動で調整' && echo "$ui" | grep -Fq '縦長写真モード' && test "$opcode" != "404" && test "$talkcode" != "404"; then exit 0; fi
             sleep 5
           done
           echo "::error::Production RC14.21/avatar crop verification failed"
