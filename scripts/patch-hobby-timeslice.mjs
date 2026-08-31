@@ -24,12 +24,14 @@ api=api.replace(statusOld,statusNew);
 // Allow enough time for the persistent sandbox to snapshot and resume on a slice boundary.
 api=api.replace("})(),20000,'SANDBOX_STATUS_TIMEOUT');return res.status(200).json(data)","})(),60000,'SANDBOX_STATUS_TIMEOUT');return res.status(200).json(data)");
 
-// Pipeline session budget. 25 minutes leaves a wide margin below Hobby's per-session ceiling.
+// Pipeline session budget. Pro now uses a longer default slice while keeping margin below the 44m Sandbox timeout.
 const lockLine="const PIPELINE_LOCK=`${BASE}/pipeline.lock`;";
-const sliceConsts="const PIPELINE_LOCK=`${BASE}/pipeline.lock`;\nconst SESSION_STARTED_AT=Date.now();\nconst SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||25*60*1000));\nfunction sessionSliceDue(){return Date.now()-SESSION_STARTED_AT>=SESSION_SLICE_MS}";
+const sliceConsts="const PIPELINE_LOCK=`${BASE}/pipeline.lock`;\nconst SESSION_STARTED_AT=Date.now();\nconst SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||38*60*1000));\nfunction sessionSliceDue(){return Date.now()-SESSION_STARTED_AT>=SESSION_SLICE_MS}";
 if(!pipeline.includes('const SESSION_STARTED_AT=Date.now();')){
   if(!pipeline.includes(lockLine))throw new Error('HOBBY_TIMESLICE_PIPELINE_CONST_TARGET_MISSING');
   pipeline=pipeline.replace(lockLine,sliceConsts);
+}else{
+  pipeline=pipeline.replace("const SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||25*60*1000));","const SESSION_SLICE_MS=Math.max(10*60*1000,Number(process.env.HRAI_SESSION_SLICE_MS||38*60*1000));");
 }
 
 // Yield after a completed transcription chunk, never mid-upload or mid-transcription.
@@ -63,6 +65,19 @@ if(!pipeline.includes(renderCallNew)){
   pipeline=pipeline.replace(renderCall,renderCallNew);
 }
 
+// Pro-oriented speedups: fewer FFmpeg launches on long shows, shorter QA sample,
+// stream-copy final concat with automatic compatibility fallback, and parallel post-processing.
+pipeline=pipeline.replace("function renderBlockWidth(d){const forced=Number(process.env.HRAI_RENDER_BLOCK_SECONDS||0);if(forced>=8&&forced<=360)return forced;return d>=2700?60:d>=1200?90:d>=600?180:360}","function renderBlockWidth(d){const forced=Number(process.env.HRAI_RENDER_BLOCK_SECONDS||0);if(forced>=8&&forced<=360)return forced;return d>=2700?120:d>=1200?180:d>=600?240:360}");
+pipeline=pipeline.replace("const sample=Math.min(180,Math.max(10,dur-5))","const sample=Math.min(45,Math.max(10,dur-5))");
+
+const concatOld="const finalTmp=`${BASE}/HurricaneRadioAI.partial.mp4`;await fsp.rm(finalTmp,{force:true});await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c:v','copy','-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-af','aresample=async=1:first_pts=0','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],900000);";
+const concatNew="const finalTmp=`${BASE}/HurricaneRadioAI.partial.mp4`;await fsp.rm(finalTmp,{force:true});try{await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c','copy','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],300000);if(!(await validVideo(finalTmp,expected,100000)))throw new Error('FAST_CONCAT_COPY_VALIDATION_FAILED')}catch(e){await fsp.rm(finalTmp,{force:true});await status({stage:'finalizing',phase:'高速結合を互換モードで仕上げ中',progress:95,fastConcatFallback:true});await run('ffmpeg',['-hide_banner','-loglevel','error','-fflags','+genpts','-f','concat','-safe','0','-i',list,'-c:v','copy','-c:a','aac','-b:a','192k','-ar','48000','-ac','2','-af','aresample=async=1:first_pts=0','-avoid_negative_ts','make_zero','-movflags','+faststart','-y',finalTmp],900000)}";
+if(pipeline.includes(concatOld))pipeline=pipeline.replace(concatOld,concatNew);
+
+const postOld="await commitVideo(finalTmp,FINAL,expected);if(edDuration>0){const sourceTail=await tailMaxVolume(ED),finalTail=await tailMaxVolume(FINAL);if(sourceTail>-45&&finalTail<-55)throw new Error(`FINAL_ED_AUDIO_MISSING: source=${sourceTail}dB final=${finalTail}dB`)}const stat=await fsp.stat(FINAL),vd=await duration(FINAL),qa=await finalQA(FINAL,expected,tr,captionCueCount),thumbnails=await renderThumbnails(thumbTitleFile,thumbThemeFile,thumbShortFile,d,opDuration),exports=await renderExports(tr,cast,metadata,vd,opDuration),freedRenderBytes=await pruneCompletedRenderParts();";
+const postNew="await commitVideo(finalTmp,FINAL,expected);if(edDuration>0){const sourceTail=await tailMaxVolume(ED),finalTail=await tailMaxVolume(FINAL);if(sourceTail>-45&&finalTail<-55)throw new Error(`FINAL_ED_AUDIO_MISSING: source=${sourceTail}dB final=${finalTail}dB`)}const stat=await fsp.stat(FINAL),vd=await duration(FINAL),qa=await finalQA(FINAL,expected,tr,captionCueCount);await status({stage:'video_complete',phase:'MP4完成・投稿データを仕上げ中',progress:98,artifact:{name:'HurricaneRadioAI.mp4',bytes:stat.size,duration:vd,url:'/artifact'},qa,renderEtaSeconds:0,fastFinalize:true});const [thumbnails,exports]=await Promise.all([renderThumbnails(thumbTitleFile,thumbThemeFile,thumbShortFile,d,opDuration),renderExports(tr,cast,metadata,vd,opDuration)]),freedRenderBytes=await pruneCompletedRenderParts();";
+if(pipeline.includes(postOld))pipeline=pipeline.replace(postOld,postNew);
+
 // Frontend status polling waits through the snapshot/resume boundary instead of aborting early.
 const pollCall="let j=await api('/api/job-status',s,{},18000)";
 const pollCallNew="let j=await api('/api/job-status',s,{},65000)";
@@ -71,4 +86,4 @@ if(index.includes(pollCall))index=index.replace(pollCall,pollCallNew);
 fs.writeFileSync(apiPath,api);
 fs.writeFileSync(pipelinePath,pipeline);
 fs.writeFileSync(indexPath,index);
-console.log('applied Hobby time-sliced longform pipeline: checkpoint -> stop -> snapshot -> resume -> concat');
+console.log('applied longform pipeline + Pro speedups: 38m slices, larger blocks, fast concat fallback, shorter QA, parallel post-processing');
