@@ -1,0 +1,25 @@
+name: Inspect Render Speed
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/inspect-render-speed.yml']
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 24}
+      - name: Reconstruct current RC14.21
+        run: |
+          node scripts/restore-rc1421.mjs
+          node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
+          node scripts/patch-custom-op-talk-bgm-v2.mjs
+          node scripts/patch-expired-job-recovery.mjs
+          node scripts/patch-avatar-bustup.mjs
+          if [ -f scripts/patch-larger-captions.mjs ]; then node scripts/patch-larger-captions.mjs; fi
+      - name: Inspect render/finalization
+        run: |
+          grep -nE 'function renderBlockWidth|function videoProfile|concat|renderExports|renderThumbnails|commitVideo|finalQA|pruneCompletedRenderParts|stage:.complete|stage:\x27complete\x27' worker/hrai-pipeline.mjs | head -120
+          sed -n '235,305p' worker/hrai-pipeline.mjs
