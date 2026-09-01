@@ -1,3 +1,4 @@
+import './patch-status-write-race.mjs';
 import fs from 'node:fs';
 const p='worker/hrai-pipeline.mjs';
 let s=fs.readFileSync(p,'utf8');
