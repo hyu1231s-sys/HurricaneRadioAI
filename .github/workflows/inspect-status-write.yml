@@ -1,0 +1,27 @@
+name: Inspect Status Write
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/inspect-status-write.yml'
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Reconstruct current RC14.21
+        run: |
+          node scripts/restore-rc1421.mjs
+          node scripts/patch-hobby-timeslice.mjs
+          node scripts/patch-transcript-audio-preview.mjs
+          node scripts/patch-custom-op-talk-bgm-v2.mjs
+          node scripts/patch-expired-job-recovery.mjs
+          node scripts/patch-avatar-bustup.mjs
+          node scripts/patch-large-conversation-captions.mjs
+      - name: Inspect status writers
+        run: |
+          grep -nE "async function status|function status|status.json|\.tmp|rename\(" worker/hrai-pipeline.mjs | head -120
+          sed -n '1,90p' worker/hrai-pipeline.mjs
