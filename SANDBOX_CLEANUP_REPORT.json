@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "generatedAt": "2026-09-06T18:27:29.345Z",
+  "generatedAt": "2026-09-07T18:30:19.390Z",
   "policy": {
     "keepBase": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
     "keepLatest": 3,
@@ -781,9 +781,9 @@
     {
       "id": "snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip",
       "sizeBytes": 1058635891,
-      "lastUsedAt": 1788632851523,
+      "lastUsedAt": 1788719256144,
       "createdAt": 1787168873398,
-      "expiresAt": 1791224851522,
+      "expiresAt": 1791311256143,
       "base": true
     },
     {
@@ -829,17 +829,17 @@
   ],
   "stage": "persistent-capacity-ok",
   "persistentCapacitySmoke": {
-    "name": "hrai-persistent-smoke-34051771102",
+    "name": "hrai-persistent-smoke-34151886300",
     "request": {
       "persistent": true,
       "snapshotExpiration": 86400000
     },
     "createStatus": 200,
     "created": true,
-    "createBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-34051771102\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_dG02vZ5GSh1qurxs05ug0AamMh0O\",\"status\":\"running\",\"statusUpdatedAt\":1788719256126,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1788719256127,\"updatedAt\":1788719256127},\"session\":{\"id\":\"sbx_dG02vZ5GSh1qurxs05ug0AamMh0O\",\"runtime\":\"node22\",\"requestedAt\":1788719256024,\"startedAt\":1788719256064,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1788719256024,\"updatedAt\":1788719256074,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-persistent-smoke-34051771102\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
+    "createBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-34151886300\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_9RF0Sb3TX9GEyl1g2BLbmtGdYOQI\",\"status\":\"running\",\"statusUpdatedAt\":1788805827516,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"cwd\":\"/vercel\",\"createdAt\":1788805827516,\"updatedAt\":1788805827516},\"session\":{\"id\":\"sbx_9RF0Sb3TX9GEyl1g2BLbmtGdYOQI\",\"runtime\":\"node22\",\"requestedAt\":1788805827444,\"startedAt\":1788805827468,\"status\":\"running\",\"vcpus\":2,\"memory\":4096,\"timeout\":120000,\"region\":\"iad1\",\"cwd\":\"/vercel\",\"sourceSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"createdAt\":1788805827444,\"updatedAt\":1788805827478,\"interactivePort\":26661,\"sourceSandboxName\":\"hrai-persistent-smoke-34151886300\",\"projectId\":\"prj_4Ic6K8bRGDMFEfmx83plLe7YJLdu\"},\"routes\":[]}",
     "deleteStatus": 200,
     "deleted": true,
-    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-34051771102\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_dG02vZ5GSh1qurxs05ug0AamMh0O\",\"status\":\"running\",\"statusUpdatedAt\":1788719256126,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"totalEgressBytes\":0,\"totalIngressBytes\":0,\"totalActiveCpuDurationMs\":0,\"totalDurationMs\":0,\"cwd\":\"/vercel\",\"createdAt\":1788719256127,\"updatedAt\":1788719256127}}"
+    "deleteBody": "{\"sandbox\":{\"name\":\"hrai-persistent-smoke-34151886300\",\"currentSnapshotId\":\"snap_mW7maB1otMUcQXf9G59Y4z4dO6Ip\",\"currentSessionId\":\"sbx_9RF0Sb3TX9GEyl1g2BLbmtGdYOQI\",\"status\":\"running\",\"statusUpdatedAt\":1788805827516,\"persistent\":true,\"region\":\"iad1\",\"failoverRegions\":[],\"vcpus\":2,\"memory\":4096,\"runtime\":\"node22\",\"image\":\"vercel/sandbox/universal@sha256:0e3e3617e824397f170fc7c43ccaa565dd7ac36518e83ead3d41e077cd9f6ec7\",\"timeout\":120000,\"snapshotExpiration\":86400000,\"keepLastSnapshots\":{\"count\":1,\"expiration\":86400000,\"deleteEvicted\":true},\"totalEgressBytes\":0,\"totalIngressBytes\":0,\"totalActiveCpuDurationMs\":0,\"totalDurationMs\":0,\"cwd\":\"/vercel\",\"createdAt\":1788805827516,\"updatedAt\":1788805827516}}"
   },
   "persistentSandboxCapacityOk": true
 }
